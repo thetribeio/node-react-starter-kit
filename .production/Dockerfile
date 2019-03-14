@@ -21,6 +21,8 @@ RUN babel api/migrations -d build/migrations --copy-files
 RUN babel api/db.config.js -o build/db.config.js
 COPY .production/.sequelizerc ./build
 
+RUN cp -f build/package.json .
+
 RUN yarn install
 
 ################ Build the finale image ###################
@@ -34,4 +36,4 @@ COPY --from=build /usr/src/app/build ./
 
 ENV NODE_ENV=production
 
-CMD [ "node", "server.js" ]
+CMD [ "yarn", "start" ]

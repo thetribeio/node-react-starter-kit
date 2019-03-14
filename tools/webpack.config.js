@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import nodeExternals from 'webpack-node-externals';
 import overrideRules from './lib/overrideRules';
+import PackagePlugin from './lib/WebpackPackagePlugin';
 import pkg from '../package.json';
 
 const rootDir = path.resolve(__dirname, '..');
@@ -245,6 +246,8 @@ const serverConfig = {
             raw: true,
             entryOnly: false,
         }),
+
+        ...(isDebug ? [] : [new PackagePlugin({ additionalModules: ['source-map-support'] })]),
     ],
 
     externals: [nodeExternals()],
