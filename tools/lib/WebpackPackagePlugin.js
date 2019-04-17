@@ -7,9 +7,9 @@ const pluginName = 'WebpackPackagePlugin';
 const getParentIdentifier = (identifier) => {
     if ('@' === identifier[0]) {
         return identifier.split('/').slice(0, 2).join('/');
-    } else {
-        return identifier.split('/')[0];
     }
+
+    return identifier.split('/')[0];
 };
 
 const defaultOptions = {
@@ -67,6 +67,7 @@ export default class WebpackPackagePlugin {
             });
 
             // add it through webpack assets
+            // eslint-disable-next-line no-param-reassign
             compilation.assets[outputName] = {
                 source: () => output,
                 size: () => output.length,

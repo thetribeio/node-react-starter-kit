@@ -1,4 +1,4 @@
-const overrideRules = (rules, patch) => rules.map(ruleToPatch => {
+const overrideRules = (rules, patch) => rules.map((ruleToPatch) => {
     let rule = patch(ruleToPatch);
 
     if (rule.rules) {

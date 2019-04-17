@@ -16,10 +16,9 @@ const watchOptions = {
     // ignored: /node_modules/,
 };
 
-
 const createCompilationPromise = (name, compiler, config) => new Promise((resolve, reject) => {
     // listen to webpack hooks (done)
-    compiler.hooks.done.tap(name, stats => {
+    compiler.hooks.done.tap(name, (stats) => {
         // print out stats
         console.info(stats.toString(config.stats));
 
@@ -50,27 +49,27 @@ async function start() {
     server.use(errorOverlayMiddleware());
 
     // get the client webpack config
-    const clientConfig = webpackConfig.find(config => config.name === 'client');
+    const clientConfig = webpackConfig.find((config) => 'client' === config.name);
 
     // add webpackHotDevClient to its entry and ensure the polyfill is first
     clientConfig.entry.client = ['./tools/lib/webpackHotDevClient.js', ...clientConfig.entry.client]
         .sort((a, b) => b.includes('polyfill') - a.includes('polyfill'));
 
     // use the hash instead of chunkhash
-    clientConfig.output.filename = clientConfig.output.filename.replace('chunkhash', 'hash',);
-    clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace('chunkhash', 'hash',);
+    clientConfig.output.filename = clientConfig.output.filename.replace('chunkhash', 'hash');
+    clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace('chunkhash', 'hash');
     // remove the null loader (used to nullify the import of react-deep-force-update
-    clientConfig.module.rules = clientConfig.module.rules.filter(x => x.loader !== 'null-loader');
+    clientConfig.module.rules = clientConfig.module.rules.filter((x) => x.loader !== 'null-loader');
     // then push the HOT plugin
     clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
     // get the server webpack config
-    const serverConfig = webpackConfig.find(config => config.name === 'server');
+    const serverConfig = webpackConfig.find((config) => 'server' === config.name);
     // configure the HOT
     serverConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
     serverConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
     // remove null loaders (might be critical for SSR)
-    serverConfig.module.rules = serverConfig.module.rules.filter(x => x.loader !== 'null-loader');
+    serverConfig.module.rules = serverConfig.module.rules.filter((x) => x.loader !== 'null-loader');
     // and finally push the HOT plugin
     serverConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
@@ -80,8 +79,8 @@ async function start() {
     // instance the main webpack compiler
     const multiCompiler = webpack(webpackConfig);
     // and dissociate from it our client & server compiler
-    const clientCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'client');
-    const serverCompiler = multiCompiler.compilers.find(compiler => compiler.name === 'server');
+    const clientCompiler = multiCompiler.compilers.find((compiler) => 'client' === compiler.name);
+    const serverCompiler = multiCompiler.compilers.find((compiler) => 'server' === compiler.name);
 
     // create promises on their compilations
     const clientPromise = createCompilationPromise('client', clientCompiler, clientConfig);
@@ -115,7 +114,7 @@ async function start() {
 
         // set the resolve callback as appPromiseResolve and save the promise itself as appPromise
         // eslint-disable-next-line no-return-assign
-        appPromise = new Promise(resolve => (appPromiseResolve = resolve));
+        appPromise = new Promise((resolve) => (appPromiseResolve = resolve));
     });
 
     // app instance will remain here
@@ -124,7 +123,7 @@ async function start() {
     // redirect the request to the resolved server
     server.use((req, res) => appPromise
         .then(() => app.handle(req, res))
-        .catch(error => console.error(error)));
+        .catch((error) => console.error(error)));
 
     function checkForUpdate(fromUpdate) {
         // hell of a prefix...
@@ -141,7 +140,7 @@ async function start() {
 
         return app.hot
             .check(true)
-            .then(updatedModules => {
+            .then((updatedModules) => {
                 if (!updatedModules) {
                     if (fromUpdate) {
                         console.info(`${hmrPrefix}Update applied.`);
@@ -150,15 +149,15 @@ async function start() {
                     return;
                 }
 
-                if (updatedModules.length === 0) {
+                if (0 === updatedModules.length) {
                     console.info(`${hmrPrefix}Nothing hot updated.`);
                 } else {
                     console.info(`${hmrPrefix}Updated modules:`);
-                    updatedModules.forEach(moduleId => console.info(`${hmrPrefix} - ${moduleId}`));
+                    updatedModules.forEach((moduleId) => console.info(`${hmrPrefix} - ${moduleId}`));
                     checkForUpdate(true);
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 if (['abort', 'fail'].includes(app.hot.status())) {
                     console.warn(`${hmrPrefix}Cannot apply update.`);
                     // we cannot apply the update so we will reload the whole server

@@ -8,9 +8,9 @@ import bundle from './bundle';
  * format and copies it to the output (build) folder.
  */
 async function build() {
-  await run(clean);
-  await run(copy);
-  await run(bundle);
+    await run(clean);
+    await run(copy);
+    await run(bundle);
 }
 
 export default build;

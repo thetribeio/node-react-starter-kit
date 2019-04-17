@@ -21,5 +21,5 @@ module.exports = {
         acquire: 60000,
     },
     // we don't want to log options
-    logging: (query) => console.log(query),
+    logging: (query) => console.info(query),
 };
