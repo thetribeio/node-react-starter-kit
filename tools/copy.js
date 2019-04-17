@@ -32,7 +32,7 @@ async function copy() {
                     cleanDir(dist, { nosort: true, dot: true });
                     break;
                 default:
-                    return;
+                    break;
             }
         });
     }

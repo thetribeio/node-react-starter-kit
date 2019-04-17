@@ -51,11 +51,19 @@
     "webpack-bundle-analyzer": "^3.0.4",
     "webpack-dev-middleware": "^3.5.2",
     "webpack-hot-middleware": "^2.24.3",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-node": "^0.3.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "^22.4.1",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4"
   },
   "scripts": {
-    "lint:": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
-    "lint:fix": "yarn run lint-js --fix",
+    "lint:js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
+    "lint:js:fix": "yarn run lint --fix",
+    "lint": "yarn run lint:js",
     "test": "jest",
     "test:watch": "yarn run test --watch --notify",
     "test:cover": "yarn run test --coverage",

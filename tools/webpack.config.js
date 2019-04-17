@@ -147,7 +147,7 @@ const clientConfig = {
     plugins: [
         // Define free variables
         // https://webpack.js.org/plugins/define-plugin/
-        new webpack.DefinePlugin({ __DEV__: isDebug, }),
+        new webpack.DefinePlugin({ __DEV__: isDebug }),
         new HtmlWebpackPlugin({ template: 'index.html' }),
         ...(isDebug ? [] : [
             new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
@@ -251,7 +251,6 @@ const serverConfig = {
     ],
 
     externals: [nodeExternals()],
-
 
     // Do not replace node globals with polyfills
     // https://webpack.js.org/configuration/node/

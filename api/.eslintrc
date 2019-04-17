@@ -1,0 +1,12 @@
+{
+  "env": {
+    "node": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "api"]
+      }
+    }
+  }
+}
