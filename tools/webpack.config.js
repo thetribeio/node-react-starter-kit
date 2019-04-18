@@ -104,7 +104,7 @@ const clientConfig = {
     target: 'web',
 
     entry: {
-        client: ['@babel/polyfill', './app/index.js'],
+        client: ['@babel/polyfill', './app/index.jsx'],
     },
 
     output: {
@@ -247,7 +247,9 @@ const serverConfig = {
             entryOnly: false,
         }),
 
-        ...(isDebug ? [] : [new PackagePlugin({ additionalModules: ['source-map-support'] })]),
+        ...(isDebug ? [] : [new PackagePlugin({
+            additionalModules: ['source-map-support', 'sequelize-cli'],
+        })]),
     ],
 
     externals: [nodeExternals()],
