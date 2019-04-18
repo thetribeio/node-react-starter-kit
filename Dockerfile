@@ -1,4 +1,4 @@
-FROM node:10.15.0-slim
+FROM node:10.15.1-slim
 
 RUN userdel node
 
