@@ -13,5 +13,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Misc
+.DS_Store
+
+# Docker
 /docker-compose.override.yml
 /watchOptions.config.js
