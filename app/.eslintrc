@@ -1,12 +1,10 @@
 {
-  "env": {
-    "browser": true
-  },
-  "settings": {
-    "import/resolver": {
-      "alias": [
-        ["@app", "./app"]
-      ]
+    "env": {
+        "browser": true
+    },
+    "settings": {
+        "import/resolver": {
+            "alias": [["@app", "./app"]]
+        }
     }
-  }
 }

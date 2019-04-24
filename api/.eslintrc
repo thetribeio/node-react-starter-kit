@@ -1,12 +1,10 @@
 {
-  "env": {
-    "node": true
-  },
-  "settings": {
-    "import/resolver": {
-      "alias": [
-        ["@api", "./api"]
-      ]
+    "env": {
+        "node": true
+    },
+    "settings": {
+        "import/resolver": {
+            "alias": [["@api", "./api"]]
+        }
     }
-  }
 }

@@ -1,25 +1,25 @@
 version: '2.0'
 services:
-  app:
-    build: .
-    environment:
-      NODE_ENV: development
-      DATABASE_USER: thetribe
-      DATABASE_PASSWORD: 424242
-      DATABASE_HOST: postgres
-      DATABASE_NAME: thetribe
-    depends_on:
-      - postgres
-    volumes:
-      - ./:/usr/src/project
-  postgres:
-    image: postgres:10.7
-    environment:
-      PGUSER: thetribe
-      PGPASSWORD: 424242
-      POSTGRES_USER: thetribe
-      POSTGRES_PASSWORD: 424242
-    volumes:
-      - db:/var/lib/postgresql/data
+    app:
+        build: .
+        environment:
+            NODE_ENV: development
+            DATABASE_USER: thetribe
+            DATABASE_PASSWORD: 424242
+            DATABASE_HOST: postgres
+            DATABASE_NAME: thetribe
+        depends_on:
+            - postgres
+        volumes:
+            - ./:/usr/src/project
+    postgres:
+        image: postgres:10.7
+        environment:
+            PGUSER: thetribe
+            PGPASSWORD: 424242
+            POSTGRES_USER: thetribe
+            POSTGRES_PASSWORD: 424242
+        volumes:
+            - db:/var/lib/postgresql/data
 volumes:
-  db:
+    db:
