@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import route from 'utils/route';
-import { Book } from 'models';
+import route from '@api/utils/route';
+import { Book } from '@api/models';
 
 const router = new Router();
 

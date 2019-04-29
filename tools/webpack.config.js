@@ -116,8 +116,10 @@ const clientConfig = {
         // Webpack mutates resolve object, so clone it to avoid issues
         // https://github.com/webpack/webpack/issues/4817
         ...config.resolve,
-        // Allow absolute paths in imports, e.g. import Button from 'components/Button'
-        modules: ['node_modules', 'app'],
+        // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
+        alias: {
+            '@app': path.resolve('./app'),
+        },
     },
 
     module: {
@@ -203,7 +205,10 @@ const serverConfig = {
         // Webpack mutates resolve object, so clone it to avoid issues
         // https://github.com/webpack/webpack/issues/4817
         ...config.resolve,
-        modules: ['node_modules', 'api'],
+        // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
+        alias: {
+            '@api': path.resolve('./api'),
+        },
     },
 
     module: {
