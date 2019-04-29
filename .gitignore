@@ -2,7 +2,7 @@
 node_modules/
 
 # Compiled output
-build
+/build
 
 # Test coverage
 coverage
@@ -22,3 +22,4 @@ yarn-error.log*
 
 # Misc
 .DS_Store
+/docker-compose.override.yml
