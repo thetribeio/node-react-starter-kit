@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import express from 'express';
 import PrettyError from 'pretty-error';
+import history from 'connect-history-api-fallback';
 import exampleController from './controllers/exampleController';
 
 /* configure Sentry */
@@ -22,10 +23,16 @@ server.use(cors());
 server.use(express.json());
 
 // serve public files
-server.use(express.static(path.resolve(__dirname, 'public')));
+const statics = express.static(path.resolve(__dirname, 'public'));
+server.use(statics);
 
 // controllers
 server.use('/example', exampleController);
+
+if (!module.hot) {
+    // fallback history for SPA
+    server.use(history(), statics);
+}
 
 // Use the sentry error handler before any other error handler
 server.use(Sentry.Handlers.errorHandler());

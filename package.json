@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@sentry/node": "^5.1.0",
+    "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "history": "^4.9.0",
