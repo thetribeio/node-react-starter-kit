@@ -12,14 +12,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Editors and IDEs
-.idea
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
 # Misc
-.DS_Store
 /docker-compose.override.yml
