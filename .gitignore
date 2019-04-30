@@ -14,3 +14,4 @@ yarn-error.log*
 
 # Misc
 /docker-compose.override.yml
+/watchOptions.config.js

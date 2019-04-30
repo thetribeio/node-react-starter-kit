@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
@@ -7,14 +9,11 @@ import webpackConfig from './webpack.config';
 import run from './run';
 import clean from './clean';
 
+const watchOptionsConfigFile = path.resolve(__dirname, '../watchOptions.config.js');
+
 // https://webpack.js.org/configuration/watch/#watchoptions
-const watchOptions = {
-    // Watching may not work with NFS and machines in VirtualBox
-    // Uncomment next line if it is your case (use true or interval in milliseconds)
-    // poll: true,
-    // Decrease CPU or memory usage in some file systems
-    // ignored: /node_modules/,
-};
+// eslint-disable-next-line import/no-dynamic-require
+const watchOptions = fs.existsSync(watchOptionsConfigFile) ? require(watchOptionsConfigFile) : {};
 
 const createCompilationPromise = (name, compiler, config) => new Promise((resolve, reject) => {
     // listen to webpack hooks (done)

@@ -95,3 +95,17 @@ services:
             POSTGRES_USER: thetribe
             POSTGRES_PASSWORD: 424242
 ```
+
+### Watch options
+
+You may provide watch options for the compiler simply by writing a file named `watchOptions.config.js` at the root directory.
+
+```js
+module.exports = {
+    // Watching may not work with NFS and machines in VirtualBox
+    // Uncomment next line if it is your case (use true or interval in milliseconds)
+    // poll: true,
+    // Decrease CPU or memory usage in some file systems
+    // ignored: /node_modules/,
+};
+```
