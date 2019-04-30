@@ -4,9 +4,9 @@
   },
   "settings": {
     "import/resolver": {
-      "node": {
-        "moduleDirectory": ["node_modules", "app"]
-      }
+      "alias": [
+        ["@app", "./app"]
+      ]
     }
   }
 }
