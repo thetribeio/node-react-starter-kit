@@ -5,6 +5,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import history from 'connect-history-api-fallback';
 import webpackConfig from './webpack.config';
 import run from './run';
 import clean from './clean';
@@ -87,11 +88,12 @@ async function start() {
 
     // configure the webpack dev middleware
     // https://github.com/webpack/webpack-dev-middleware
-    server.use(webpackDevMiddleware(clientCompiler, {
+    const devMiddleware = webpackDevMiddleware(clientCompiler, {
         publicPath: clientConfig.output.publicPath,
         logLevel: 'silent',
         watchOptions,
-    }));
+    });
+    server.use(devMiddleware);
 
     // then configure the webpack hot middleware
     // https://github.com/glenjamin/webpack-hot-middleware
@@ -100,6 +102,8 @@ async function start() {
     let appPromise; // promise resolving the server
     let appPromiseResolve; // resolve callback of the same promise
     let appPromiseIsResolved = true; // has the promise been resolved already
+
+    const historyMiddleware = history();
 
     // listen on the server compilations
     serverCompiler.hooks.compile.tap('server', () => {
@@ -118,6 +122,10 @@ async function start() {
 
     // app instance will remain here
     let app;
+
+    const setupApp = () => {
+        app.use(historyMiddleware, devMiddleware);
+    };
 
     // redirect the request to the resolved server
     server.use((req, res) => appPromise
@@ -165,6 +173,7 @@ async function start() {
                     // now we can get the latest version of our server
                     // eslint-disable-next-line global-require, import/no-unresolved
                     app = require('../build/server').default;
+                    setupApp();
                     console.warn(`${hmrPrefix}Server has been reloaded.`);
                 } else {
                     console.warn(`${hmrPrefix}Update failed: ${error.stack || error.message}`);
@@ -190,6 +199,7 @@ async function start() {
     // loader our server for the first time
     // eslint-disable-next-line global-require, import/no-unresolved
     app = require('../build/server').default;
+    setupApp();
     appPromiseIsResolved = true;
     appPromiseResolve();
 
