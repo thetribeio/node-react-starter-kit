@@ -9,13 +9,16 @@ import App from './App';
 // get the container
 const container = document.getElementById('app');
 
+// get app data sent by the back
+const appData = JSON.parse(container.dataset.app);
+
 let appInstance = null;
 
 // Re-render the app when window.location changes
 const renderApp = () => {
     try {
         // render it
-        appInstance = render(<App />, container);
+        appInstance = render(<App appData={appData} />, container);
     } catch (error) {
         if (__DEV__) {
             throw error;

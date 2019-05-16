@@ -1,10 +1,19 @@
 import path from 'path';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import express from 'express';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
+import Html from './components/Html';
 import exampleController from './controllers/exampleController';
+// eslint-disable-next-line import/no-unresolved
+import manifest from './chunk-manifest.json';
+
+// appData to provide through the index.html
+// can be used to send environment settings to front
+const appData = {};
 
 /* configure Sentry */
 Sentry.init({
@@ -29,10 +38,18 @@ server.use(statics);
 // controllers
 server.use('/example', exampleController);
 
-if (!module.hot) {
-    // fallback history for SPA
-    server.use(history(), statics);
-}
+// then fallback
+server.use(history());
+
+// prepare the html for index.html
+const element = createElement(Html, { appData, manifest: manifest.client });
+const html = `<!doctype html>${renderToStaticMarkup(element)}`;
+
+// server it
+server.get('/index.html', (req, res) => {
+    res.setHeader('Cache-Control', 'max-age=0, no-cache');
+    res.send(html);
+});
 
 // Use the sentry error handler before any other error handler
 server.use(Sentry.Handlers.errorHandler());

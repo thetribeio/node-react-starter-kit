@@ -5,7 +5,6 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
-import history from 'connect-history-api-fallback';
 import webpackConfig from './webpack.config';
 import run from './run';
 import clean from './clean';
@@ -103,8 +102,6 @@ async function start() {
     let appPromiseResolve; // resolve callback of the same promise
     let appPromiseIsResolved = true; // has the promise been resolved already
 
-    const historyMiddleware = history();
-
     // listen on the server compilations
     serverCompiler.hooks.compile.tap('server', () => {
         if (!appPromiseIsResolved) {
@@ -122,10 +119,6 @@ async function start() {
 
     // app instance will remain here
     let app;
-
-    const setupApp = () => {
-        app.use(historyMiddleware, devMiddleware);
-    };
 
     // redirect the request to the resolved server
     server.use((req, res) => appPromise
@@ -173,7 +166,6 @@ async function start() {
                     // now we can get the latest version of our server
                     // eslint-disable-next-line global-require, import/no-unresolved
                     app = require('../build/server').default;
-                    setupApp();
                     console.warn(`${hmrPrefix}Server has been reloaded.`);
                 } else {
                     console.warn(`${hmrPrefix}Update failed: ${error.stack || error.message}`);
@@ -199,7 +191,6 @@ async function start() {
     // loader our server for the first time
     // eslint-disable-next-line global-require, import/no-unresolved
     app = require('../build/server').default;
-    setupApp();
     appPromiseIsResolved = true;
     appPromiseResolve();
 
