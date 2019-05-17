@@ -61,7 +61,11 @@
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-dev-middleware": "^3.6.2",
     "webpack-hot-middleware": "^2.24.4",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "@storybook/react": "^5.0.11",
+    "@storybook/addon-actions": "^5.0.11",
+    "@storybook/addon-links": "^5.0.11",
+    "@storybook/addons": "^5.0.11"
   },
   "scripts": {
     "lint:js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
@@ -76,6 +80,8 @@
     "build": "babel-node tools/run build",
     "build:stats": "yarn run build --release --analyze",
     "start": "babel-node tools/run start",
-    "sequelize": "babel-node ./node_modules/sequelize-cli/lib/sequelize"
+    "sequelize": "babel-node ./node_modules/sequelize-cli/lib/sequelize",
+    "storybook": "start-storybook -p 6006",
+    "storybook:build": "build-storybook"
   }
 }
