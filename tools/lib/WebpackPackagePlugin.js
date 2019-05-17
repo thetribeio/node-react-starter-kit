@@ -47,7 +47,7 @@ export default class WebpackPackagePlugin {
 
             compilation.modules.forEach(({ request, external }) => {
                 // we only look for external modules
-                if (external) {
+                if (external && !request.startsWith('./')) {
                     // get the main module identifier and try to add i
                     addDependency(getParentIdentifier(request));
                 }

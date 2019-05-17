@@ -1,9 +1,10 @@
+import fs from 'fs';
 import path from 'path';
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import nodeExternals from 'webpack-node-externals';
+import WebpackAssetsManifest from 'webpack-assets-manifest';
 import overrideRules from './lib/overrideRules';
 import PackagePlugin from './lib/WebpackPackagePlugin';
 import pkg from '../package.json';
@@ -150,7 +151,56 @@ const clientConfig = {
         // Define free variables
         // https://webpack.js.org/plugins/define-plugin/
         new webpack.DefinePlugin({ __DEV__: isDebug }),
-        new HtmlWebpackPlugin({ template: 'index.html' }),
+
+        // we need to build a manifest for the backend
+        new WebpackAssetsManifest({
+            publicPath: true,
+            writeToDisk: true,
+            output: path.resolve(buildDir, 'asset-manifest.json'),
+            done: (manifest, stats) => {
+                const addPath = (file) => manifest.getPublicPath(file);
+                // write chunk-manifest.json.json
+                const chunkFileName = path.resolve(buildDir, 'chunk-manifest.json');
+
+                try {
+                    const chunkFiles = stats.compilation.chunkGroups.reduce((acc, entry) => {
+                        if (!acc[entry.name]) {
+                            // initialize the first time an empty map
+                            acc[entry.name] = { js: [], css: [] };
+                        }
+
+                        const entryMap = acc[entry.name];
+
+                        // first loop on chunks
+                        for (const chunk of entry.chunks) {
+                            // then on files for each chunk
+                            for (const file of chunk.files) {
+                                if (file.endsWith('.js')) {
+                                    entryMap.js.push(addPath(file));
+                                }
+
+                                if (file.endsWith('.css')) {
+                                    entryMap.css.push(addPath(file));
+                                }
+                            }
+                        }
+
+                        return acc;
+                    }, {});
+
+                    // write it on the disk
+                    fs.writeFileSync(chunkFileName, JSON.stringify(chunkFiles, null, 2));
+                } catch (err) {
+                    console.error(`ERROR: Cannot write ${chunkFileName}: `, err);
+
+                    if (!isDebug) {
+                        // exit for production, it's critical
+                        process.exit(1);
+                    }
+                }
+            },
+        }),
+
         ...(isDebug ? [] : [
             new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
             // Webpack Bundle Analyzer
@@ -257,7 +307,11 @@ const serverConfig = {
         })]),
     ],
 
-    externals: [nodeExternals()],
+    externals: [
+        './asset-manifest.json',
+        './chunk-manifest.json',
+        nodeExternals(),
+    ],
 
     // Do not replace node globals with polyfills
     // https://webpack.js.org/configuration/node/
