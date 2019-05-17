@@ -9,6 +9,26 @@ const { SAUCELABS_ACCESS_KEY, SAUCELABS_HOST, SAUCELABS_USER } = process.env;
 
 setDefaultTimeout(60 * 1000);
 
+const capabilities = {
+    ie: {
+        browserName: 'internet explorer',
+        iedriverVersion: '3.14.0',
+        seleniumVersion: '3.14.0',
+        version: '11.285',
+    },
+    chrome: {
+        browserName: 'chrome',
+        screenResolution: '1920x1200',
+    },
+    firefox: {
+        browserName: 'firefox',
+    },
+    safari: {
+        browserName: 'safari',
+        screenResolution: '1920x1440',
+    },
+};
+
 const getBrowser = (browser) => () => new Builder()
     .withCapabilities({
         username: SAUCELABS_USER,
@@ -16,9 +36,9 @@ const getBrowser = (browser) => () => new Builder()
         host: SAUCELABS_HOST,
         port: 4445,
         implicit: 5000,
+        ...capabilities[browser],
     })
     .usingServer(`http://${SAUCELABS_USER}:${SAUCELABS_ACCESS_KEY}@${SAUCELABS_HOST}:4445/wd/hub`)
-    .forBrowser(browser)
     .build();
 
 const getLocalBrowser = (browser, display) => {
