@@ -1,5 +1,11 @@
 {
     "plugins": [
-        ["module-resolver", { "root": ["./api"] }]
+        [
+            "module-resolver", {
+                "alias": {
+                    "@api": "./api",
+                }
+            }
+        ]
     ]
 }

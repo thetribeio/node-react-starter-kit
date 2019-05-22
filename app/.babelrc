@@ -1,5 +1,11 @@
 {
     "plugins": [
-        ["module-resolver", { "root": ["./app"] }]
+        [
+            "module-resolver", {
+                "alias": {
+                    "@app": "./app",
+                }
+            }
+        ]
     ]
 }
