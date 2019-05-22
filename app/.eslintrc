@@ -6,5 +6,8 @@
         "import/resolver": {
             "alias": [["@app", "./app"]]
         }
+    },
+    "globals": {
+        "__DEV__": false
     }
 }
