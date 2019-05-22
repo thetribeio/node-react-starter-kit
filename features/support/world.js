@@ -42,28 +42,31 @@ const getBrowser = (browser) => () => new Builder()
     .build();
 
 const getLocalBrowser = (browser, display) => {
-    let ffoptions = null;
+    let options = null;
+    let optionsFunc = null;
 
     switch (browser) {
         case 'chrome':
-            ffoptions = new chrome.Options();
+            options = new chrome.Options();
+            optionsFunc = 'setChromeOptions';
             break;
         case 'safari':
-            ffoptions = new safari.Options();
+            options = new safari.Options();
+            optionsFunc = 'setSafariOptions';
             break;
         default:
-            ffoptions = new firefox.Options();
+            options = new firefox.Options();
+            optionsFunc = 'setFirefoxOptions';
             break;
     }
 
     if (!display) {
-        ffoptions.headless();
+        options.headless();
     }
 
-    return new Builder()
-        .setFirefoxOptions(ffoptions)
-        .setChromeOptions(ffoptions)
-        .setSafariOptions(ffoptions)
+    const builder = new Builder();
+
+    return builder[optionsFunc](options)
         .forBrowser(browser)
         .build();
 };
