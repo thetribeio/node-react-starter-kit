@@ -30,6 +30,7 @@
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
+    "saucelabs": "^2.1.9",
     "selenium-webdriver": "^4.0.0-alpha.1",
     "sequelize": "^5.12.3",
     "sequelize-cli": "^5.5.0",
