@@ -136,7 +136,11 @@ const clientConfig = {
                             {
                                 loader: 'css-loader',
                                 options: { camelCase: 'only', modules: true },
-                                include: [path.join(rootDir, 'app')],
+                                // only use module style in the directories components & routes
+                                include: [
+                                    path.join(rootDir, 'app/components'),
+                                    path.join(rootDir, 'app/routes'),
+                                ],
                             },
                             { loader: 'css-loader' },
                         ],
