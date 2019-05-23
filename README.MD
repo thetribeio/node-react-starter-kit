@@ -109,3 +109,27 @@ module.exports = {
     // ignored: /node_modules/,
 };
 ```
+
+### Global & module style sheets
+
+You may import style sheets two ways in your app. 
+Firstly, if you important a style sheets from the directories `app/components` or `app/routes`, 
+your style will be imported as a module.
+It means you have to import it and manipulate it that way ;
+
+```js
+// import it as a module
+import style from './style.css';
+
+// and use it that way
+<div className={style.myDiv} />
+```
+
+However if you import a style sheet from elsewhere (node modules or another location in your sources), 
+it wil be imported as a global. It means you have to import it that way ;
+
+```js
+import './style.css';
+```
+
+You may either import CSS style sheets or SASS stylesheet (using the extension `.scss`).
