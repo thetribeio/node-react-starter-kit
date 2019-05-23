@@ -6,12 +6,12 @@ Given('I am on Home page', async function () {
     await this.driver.get(this.host);
 });
 
-When('I do nothing', function () {
-    return true;
+When(/I press "(.*)"/, async function (id) {
+    await this.driver.findElement(By.id(id)).click();
 });
 
-Then('Hello world is displayed on home page', async function () {
-    const welcomeHome = await this.driver.findElement(By.id('hello-world')).getText();
+Then(/"(.*)" is displayed within "(.*)"/, async function (text, id) {
+    const buttonText = await this.driver.findElement(By.id(id)).getText();
 
-    expect(welcomeHome).toEqual('hello world');
+    expect(buttonText).toEqual(text);
 });
