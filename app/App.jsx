@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import createStore from './createStore';
 import Routes from './Routes';
+import './App.css';
 
 class App extends PureComponent {
     constructor(props) {
