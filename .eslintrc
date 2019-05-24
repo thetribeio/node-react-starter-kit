@@ -21,6 +21,7 @@
         "react/jsx-indent-props": ["error", 4],
         "react/require-default-props": "off",
         "yoda": ["error", "always", { "onlyEquality": true }],
-        "no-console": ["error", { "allow": ["warn", "error", "info"] }]
+        "no-console": ["error", { "allow": ["warn", "error", "info"] }],
+        "jsx-quotes": ["error", "prefer-double"]
     }
 }
