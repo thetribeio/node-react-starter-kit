@@ -47,7 +47,7 @@ server.use(history());
 const element = createElement(Html, { appData, manifest: manifest.client });
 const html = `<!doctype html>${renderToStaticMarkup(element)}`;
 
-// server it
+// serve it
 server.get('/index.html', (req, res) => {
     res.setHeader('Cache-Control', 'max-age=0, no-cache');
     res.send(html);

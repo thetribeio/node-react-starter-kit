@@ -6,6 +6,7 @@ const Html = ({ appData, manifest: { js: scripts, css: styles } }) => (
         <head>
             <meta charSet="utf-8" />
             <title>theTribe</title>
+            <link rel="icon" type="image/png" href="favicon.png" />
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             {styles.map((style) => <link rel="stylesheet" type="text/css" href={style} key={style} />)}
         </head>

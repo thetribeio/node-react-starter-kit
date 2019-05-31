@@ -6,7 +6,7 @@ import { makeDir, copyDir } from './lib/fs';
  */
 async function copy() {
     await makeDir('build');
-    await copyDir('api/public', 'build/public');
+    await copyDir('public', 'build/public');
 }
 
 export default copy;
