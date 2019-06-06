@@ -46,6 +46,8 @@ async function start() {
     server = express();
     // use the error overlay middleware to provide a better display for errors
     server.use(errorOverlayMiddleware());
+    // serve static files from the server
+    server.use(express.static(path.resolve(__dirname, '../public')));
 
     // get the client webpack config
     const clientConfig = webpackConfig.find((config) => 'client' === config.name);
