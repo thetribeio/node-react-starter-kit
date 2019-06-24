@@ -16,6 +16,7 @@ const appData = JSON.parse(container.dataset.app);
 
 Sentry.init({
     dsn: appData.sentryDsn,
+    environment: appData.sentryEnv,
 });
 
 let appInstance = null;
