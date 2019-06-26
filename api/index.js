@@ -15,6 +15,7 @@ import manifest from './chunk-manifest.json';
 // can be used to send environment settings to front
 const appData = {
     sentryDsn: process.env.SENTRY_PUBLIC_DSN,
+    sentryEnv: process.env.SENTRY_ENVIRONMENT,
 };
 
 /* configure Sentry */
