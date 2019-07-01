@@ -1052,6 +1052,21 @@
     "@sentry/types" "5.4.0"
     tslib "^1.9.3"
 
+"@thetribe/eslint-config-react@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config-react/-/eslint-config-react-0.1.2.tgz#2e6b1f99748300d666013365794552a01bfe64a1"
+  integrity sha512-r0YugHOppgaIbSMnj2fwAxBBwMqO0d3AJm/qJYY/ucy9cQa/raeSJ05SghsH4q+03pV/GZsnCmnoPvjQBzRY/g==
+  dependencies:
+    "@thetribe/eslint-config" "^0.1.2"
+    eslint-config-airbnb "^17.1.0"
+
+"@thetribe/eslint-config@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config/-/eslint-config-0.1.2.tgz#b54c2668c5558665439f71f6c58942f36de15f9f"
+  integrity sha512-bDtpsqaJreQaQlygdxkBUcuiiXO4FLadd8P2zIHNBwj3aP8hsTZI74uS4Puuqcyga1Oqh6YiJylt6QwWFO0iaQ==
+  dependencies:
+    eslint-config-airbnb-base "^13.1.0"
+
 "@types/babel__core@^7.1.0":
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.2.tgz#608c74f55928033fce18b99b213c16be4b3d114f"
