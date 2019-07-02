@@ -1,5 +1,8 @@
 FROM node:10.15.1-slim
 
+COPY docker/docker-entrypoint.sh docker/docker-is-script.js /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 RUN userdel node
 
 ARG UID=1000
@@ -10,4 +13,4 @@ WORKDIR /usr/src/project
 
 ENV PATH="/usr/src/project/node_modules/.bin:${PATH}"
 
-CMD ["yarn", "start"]
+CMD ["start"]

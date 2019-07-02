@@ -11,7 +11,7 @@ yarn start
 docker-compose up -d
 docker-compose stop app
 docker-compose run --rm app yarn install
-docker-compose run --rm app yarn sequelize db:migrate
+docker-compose run --rm app sequelize db:migrate
 docker-compose start app
 ```
 
@@ -56,7 +56,7 @@ And then run `docker-compose build` to rebuild your containers.
 yarn lint
 
 # run in docker
-docker-compose run --rm app yarn lint
+docker-compose run --rm app lint
 ```
 
 ### build the app
