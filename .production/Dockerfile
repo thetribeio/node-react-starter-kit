@@ -1,6 +1,6 @@
 ################ Build the application ############################
 
-FROM node:10.15.1-slim as build
+FROM node:12.7-slim as build
 
 WORKDIR /usr/src/app
 
@@ -27,7 +27,7 @@ RUN yarn install
 
 ################ Build the finale image ###################
 
-FROM node:10.15.1-slim
+FROM node:12.7-slim
 
 WORKDIR /usr/src/app
 
