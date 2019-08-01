@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/browser';
 // on production, webpack will nullify it
 // eslint-disable-next-line import/no-extraneous-dependencies
 import deepForceUpdate from 'react-deep-force-update';
+import apolloClient from './apolloClient';
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './App';
 
@@ -24,7 +25,12 @@ let appInstance = null;
 // Re-render the app when window.location changes
 const renderApp = () => {
     try {
-        let appElement = <App appData={appData} />;
+        let appElement = (
+            <App
+                appData={appData}
+                apolloClient={apolloClient}
+            />
+        );
 
         if (!__DEV__) {
             appElement = (

@@ -3,6 +3,7 @@
         [
             "module-resolver", {
                 "alias": {
+                    "@api": "./api",
                     "@app": "./app",
                 }
             }
