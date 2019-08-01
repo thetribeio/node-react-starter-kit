@@ -5,7 +5,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import nodeExternals from 'webpack-node-externals';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
-import overrideRules from './lib/overrideRules';
+import TerserPlugin from 'terser-webpack-plugin';
 import PackagePlugin from './lib/WebpackPackagePlugin';
 import pkg from '../package.json';
 
@@ -13,6 +13,41 @@ const rootDir = path.resolve(__dirname, '..');
 const buildDir = path.join(rootDir, 'build');
 const isDebug = process.env.NODE_ENV !== 'production';
 const isAnalyze = process.argv.includes('--analyze');
+
+const getBabelRule = (envPresetOptions) => ({
+    test: /\.jsx?$/,
+    include: [
+        path.join(rootDir, 'app'),
+        path.join(rootDir, 'api'),
+        path.join(rootDir, 'tools'),
+    ],
+    loader: 'babel-loader',
+    options: {
+        // https://github.com/babel/babel-loader#options
+        cacheDirectory: isDebug,
+
+        // https://babeljs.io/docs/usage/options/
+        babelrc: false,
+
+        presets: [
+            // A Babel preset that can automatically determine the Babel plugins and polyfills
+            // https://github.com/babel/babel-preset-env
+            ['@babel/preset-env', envPresetOptions],
+
+            // JSX
+            // https://github.com/babel/babel/tree/master/packages/babel-preset-react
+            ['@babel/preset-react', { development: isDebug }],
+        ],
+    },
+});
+
+const sharedRules = [
+    // Exclude dev modules from production build
+    !isDebug && {
+        test: path.resolve(rootDir, 'node_modules/react-deep-force-update/lib/index.js'),
+        loader: 'null-loader',
+    },
+].filter(Boolean);
 
 const config = {
     context: rootDir,
@@ -27,50 +62,6 @@ const config = {
 
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.mjs'],
-    },
-
-    module: {
-        rules: [
-            // Rules for JS / JSX
-            {
-                test: /\.jsx?$/,
-                include: [
-                    path.join(rootDir, 'app'),
-                    path.join(rootDir, 'api'),
-                    path.join(rootDir, 'tools'),
-                ],
-                loader: 'babel-loader',
-                options: {
-                    // https://github.com/babel/babel-loader#options
-                    cacheDirectory: isDebug,
-
-                    // https://babeljs.io/docs/usage/options/
-                    babelrc: false,
-
-                    presets: [
-                        // A Babel preset that can automatically determine the Babel plugins and polyfills
-                        // https://github.com/babel/babel-preset-env
-                        ['@babel/preset-env', {
-                            targets: { browsers: pkg.browserslist },
-                            forceAllTransforms: !isDebug, // for UglifyJS
-                            modules: false,
-                            useBuiltIns: false,
-                            debug: false,
-                        }],
-
-                        // JSX
-                        // https://github.com/babel/babel/tree/master/packages/babel-preset-react
-                        ['@babel/preset-react', { development: isDebug }],
-                    ],
-                },
-            },
-
-            // Exclude dev modules from production build
-            ...(isDebug ? [] : [{
-                test: path.resolve(rootDir, 'node_modules/react-deep-force-update/lib/index.js'),
-                loader: 'null-loader',
-            }]),
-        ],
     },
 
     // Don't attempt to continue if there are any errors.
@@ -124,9 +115,23 @@ const clientConfig = {
     },
 
     module: {
-        ...config.module,
         rules: [
-            ...config.module.rules,
+            // Rules for JS / JSX
+            getBabelRule({
+                targets: { browsers: pkg.browserslist },
+                // Allow importing core-js in entrypoint and use browserlist to select polyfills
+                useBuiltIns: 'entry',
+                // Set the corejs version we are using to avoid warnings in console
+                // This will need to change once we upgrade to corejs@3
+                corejs: 3,
+                // Do not transform modules to CJS
+                modules: false,
+            }),
+
+            // Shared rules
+            ...sharedRules,
+
+            // Style rules
             {
                 test: /\.s?css$/,
                 rules: [
@@ -135,7 +140,7 @@ const clientConfig = {
                         oneOf: [
                             {
                                 loader: 'css-loader',
-                                options: { camelCase: 'only', modules: true },
+                                options: { localsConvention: 'camelCase', modules: true },
                                 // only use module style in the directories components & routes
                                 include: [
                                     path.join(rootDir, 'app/components'),
@@ -205,25 +210,71 @@ const clientConfig = {
             },
         }),
 
-        ...(isDebug ? [] : [
-            new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
-            // Webpack Bundle Analyzer
-            // https://github.com/th0r/webpack-bundle-analyzer
-            ...(isAnalyze ? [new BundleAnalyzerPlugin()] : []),
-        ]),
-    ],
+        !isDebug && new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
+
+        // Webpack Bundle Analyzer
+        // https://github.com/th0r/webpack-bundle-analyzer
+        isDebug && isAnalyze && new BundleAnalyzerPlugin(),
+    ].filter(Boolean),
 
     // Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk).
     optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    chunks: 'initial',
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
+        minimize: !isDebug,
+        minimizer: [
+            // This is only used in production mode
+            new TerserPlugin({
+                terserOptions: {
+                    parse: {
+                        // we want terser to parse ecma 8 code. However, we don't want it
+                        // to apply any minification steps that turns valid ecma 5 code
+                        // into invalid ecma 5 code. This is why the 'compress' and 'output'
+                        // sections only apply transformations that are ecma 5 safe
+                        // https://github.com/facebook/create-react-app/pull/4234
+                        ecma: 8,
+                    },
+                    compress: {
+                        ecma: 5,
+                        warnings: false,
+                        // Disabled because of an issue with Uglify breaking seemingly valid code:
+                        // https://github.com/facebook/create-react-app/issues/2376
+                        // Pending further investigation:
+                        // https://github.com/mishoo/UglifyJS2/issues/2011
+                        comparisons: false,
+                        // Disabled because of an issue with Terser breaking valid code:
+                        // https://github.com/facebook/create-react-app/issues/5250
+                        // Pending further investigation:
+                        // https://github.com/terser-js/terser/issues/120
+                        inline: 2,
+                    },
+                    mangle: {
+                        safari10: true,
+                    },
+                    output: {
+                        ecma: 5,
+                        comments: false,
+                        // Turned on because emoji and regex is not minified properly using default
+                        // https://github.com/facebook/create-react-app/issues/2488
+                        ascii_only: true,
+                    },
                 },
-            },
+
+                // Enable file caching
+                cache: true,
+                sourceMap: true,
+            }),
+        ],
+
+        // Automatically split vendor and commons
+        // https://twitter.com/wSokra/status/969633336732905474
+        // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+        splitChunks: {
+            chunks: 'all',
+            name: false,
         },
+
+        // Keep the runtime chunk separated to enable long term caching
+        // https://twitter.com/wSokra/status/969679223278505985
+        runtimeChunk: true,
     },
 
     // Some libraries import Node modules but don't use them in the browser.
@@ -266,31 +317,18 @@ const serverConfig = {
     },
 
     module: {
-        ...config.module,
+        rules: [
+            // Rules for JS / JSX
+            getBabelRule({
+                targets: { node: pkg.engines.node.match(/(\d+\.?)+/)[0] },
+                modules: false,
+                useBuiltIns: false,
+                debug: false,
+            }),
 
-        rules: overrideRules(config.module.rules, (rule) => {
-            switch (rule.loader) {
-                case 'babel-loader':
-                    // Override babel-preset-env configuration for Node.js
-                    return {
-                        ...rule,
-                        options: {
-                            ...rule.options,
-                            presets: rule.options.presets.map((preset) => ('@babel/preset-env' !== preset[0]
-                                ? preset
-                                : ['@babel/preset-env', {
-                                    targets: { node: pkg.engines.node.match(/(\d+\.?)+/)[0] },
-                                    modules: false,
-                                    useBuiltIns: false,
-                                    debug: false,
-                                }])),
-                        },
-                    };
-
-                default:
-                    return rule;
-            }
-        }),
+            // Shared rules
+            ...sharedRules,
+        ],
     },
 
     plugins: [
@@ -306,10 +344,10 @@ const serverConfig = {
             entryOnly: false,
         }),
 
-        ...(isDebug ? [] : [new PackagePlugin({
+        !isDebug && new PackagePlugin({
             additionalModules: ['source-map-support', 'sequelize-cli'],
-        })]),
-    ],
+        }),
+    ].filter(Boolean),
 
     externals: [
         './asset-manifest.json',
