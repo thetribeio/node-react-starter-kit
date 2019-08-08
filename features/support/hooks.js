@@ -1,10 +1,10 @@
-const { After, Before } = require('cucumber');
-const SauceLabs = require('saucelabs').default;
+import { After, Before } from 'cucumber';
+import SauceLabs from 'saucelabs';
 
-const { Builder } = require('selenium-webdriver');
-const firefox = require('selenium-webdriver/firefox');
-const chrome = require('selenium-webdriver/chrome');
-const safari = require('selenium-webdriver/safari');
+import { Builder } from 'selenium-webdriver';
+import firefox from 'selenium-webdriver/firefox';
+import chrome from 'selenium-webdriver/chrome';
+import safari from 'selenium-webdriver/safari';
 
 const { SAUCELABS_ACCESS_KEY, SAUCELABS_HOST, SAUCELABS_USER } = process.env;
 
@@ -28,7 +28,7 @@ const capabilities = {
     },
 };
 
-const getBrowser = (browser) => () => new Builder()
+const getBrowser = (browser) => new Builder()
     .withCapabilities({
         username: SAUCELABS_USER,
         accessKey: SAUCELABS_ACCESS_KEY,
@@ -79,16 +79,18 @@ Before(async function () {
 });
 
 After(async function ({ pickle: { name }, result: { status } }) {
-    const sauceApi = new SauceLabs({ user: SAUCELABS_USER, key: SAUCELABS_ACCESS_KEY });
-    // eslint-disable-next-line no-underscore-dangle
-    const jobId = (await this.driver.getSession()).id_;
-    const passed = 'passed' === status;
-    sauceApi.updateJob(SAUCELABS_USER, jobId, {
-        name: `${this.browser} - ${name}`,
-        passed,
-    });
-    this.driver.quit();
-    if (!passed) {
-        console.log(`Failed test video: https://app.saucelabs.com/tests/${jobId}`);
+    if (!this.local) {
+        const sauceApi = new SauceLabs({ user: SAUCELABS_USER, key: SAUCELABS_ACCESS_KEY });
+        // eslint-disable-next-line no-underscore-dangle
+        const jobId = (await this.driver.getSession()).id_;
+        const passed = 'passed' === status;
+        sauceApi.updateJob(SAUCELABS_USER, jobId, {
+            name: `${this.browser} - ${name}`,
+            passed,
+        });
+        if (!passed) {
+            console.log(`Failed test video: https://app.saucelabs.com/tests/${jobId}`);
+        }
     }
+    this.driver.quit();
 });

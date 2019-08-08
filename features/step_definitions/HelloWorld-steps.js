@@ -1,17 +1,14 @@
-const { Given, Then, When } = require('cucumber');
-const { By } = require('selenium-webdriver');
-const expect = require('expect');
+import { Given, Then, When } from 'cucumber';
 
 Given('I am on Home page', async function () {
-    await this.driver.get(this.host);
+    this.page = this.pageFactory.create('Home');
+    await this.page.loadAndWaitUntilVisible();
 });
 
-When(/I press "(.*)"/, async function (id) {
-    await this.driver.findElement(By.id(id)).click();
+When(/I press the button/, async function () {
+    await this.page.clickButton();
 });
 
-Then(/"(.*)" is displayed within "(.*)"/, async function (text, id) {
-    const buttonText = await this.driver.findElement(By.id(id)).getText();
-
-    expect(buttonText).toEqual(text);
+Then(/"(.*)" is displayed in Home page/, async function (text) {
+    this.page.assertTextInClickMe(text);
 });

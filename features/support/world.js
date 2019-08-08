@@ -1,5 +1,6 @@
 /* eslint-disable func-names */
-const { setDefaultTimeout, setWorldConstructor } = require('cucumber');
+import { setDefaultTimeout, setWorldConstructor } from 'cucumber';
+import Factory from '../pages/Factory';
 
 setDefaultTimeout(60 * 1000);
 
@@ -7,6 +8,7 @@ const World = function World(args) {
     this.browser = args.parameters.browser;
     this.local = args.parameters.local;
     this.display = args.parameters.display;
+    this.pageFactory = new Factory(this);
 
     if (args.parameters.local) {
         this.host = 'http://localhost:3000';

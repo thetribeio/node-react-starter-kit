@@ -10,7 +10,6 @@ services:
             DATABASE_NAME: thetribe
         depends_on:
             - postgres
-            - sauce-connect
         volumes:
             - ./:/usr/src/project
         networks:
@@ -26,7 +25,5 @@ services:
             POSTGRES_PASSWORD: 424242
         volumes:
             - db:/var/lib/postgresql/data
-    sauce-connect:
-        image: thetribe/sauce-connect:4.5.3
 volumes:
     db:
