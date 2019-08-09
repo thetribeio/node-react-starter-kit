@@ -1,0 +1,83 @@
+version: 2.1
+orbs:
+  # Ref: https://circleci.com/orbs/registry/orb/circleci/docker
+  docker: circleci/docker@0.5.13
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.7
+    working_directory: ~/node-react-starter-kit
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}-
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Test db migration
+          command: sequelize db:migrate
+      - run:
+          name: Start app for tests
+          background: true
+          command: yarn start
+      - run:
+          name: Build app
+          command: yarn build
+      - run:
+          name: Lint app
+          command: yarn lint
+
+  deploy_prod:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      # TODO see https://circleci.com/orbs/registry/orb/radar/sentry
+      - run:
+          name: Deployment notification to Sentry
+          command: echo "Deployment notification to Sentry"  # TODO
+      - run:
+          name: Upload sourcemap to Sentry
+          command: echo "Upload sourcemap to Sentry"  # TODO
+
+  deploy_preprod:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      # TODO
+      - run:
+          name: Deployment notification to Sentry
+          command: echo "Deployment notification to Sentry"  # TODO
+      - run:
+          name: Upload sourcemap to Sentry
+          command: echo "Upload sourcemap to Sentry"  # TODO
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy_prod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy_preprod:
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+  docker-lint:
+    jobs:
+      - docker/hadolint
