@@ -12,6 +12,10 @@ services:
             - postgres
         volumes:
             - ./:/usr/src/project
+        networks:
+          default:
+            aliases:
+              - app.local
     postgres:
         image: postgres:10.7
         environment:
