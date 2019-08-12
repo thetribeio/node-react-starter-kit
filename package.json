@@ -61,7 +61,7 @@
     "mkdirp": "^0.5.1",
     "null-loader": "^3.0.0",
     "react-deep-force-update": "^2.1.3",
-    "react-dev-utils": "^9.0.1",
+    "react-dev-utils": "^9.0.2",
     "react-error-overlay": "^5.1.6",
     "react-test-renderer": "^16.8.6",
     "rimraf": "^2.6.3",
