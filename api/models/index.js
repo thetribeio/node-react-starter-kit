@@ -3,9 +3,7 @@ import Book from './Book';
 
 const models = { User, Book };
 
-Object.keys(models).forEach((modelName) => {
-    const model = models[modelName];
-
+Object.values(models).forEach((model) => {
     if (model.associate) {
         model.associate(models);
 
