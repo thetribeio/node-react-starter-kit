@@ -11,6 +11,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     define: {
         freezeTableName: true,
+        underscored: true,
     },
     pool: {
         max: 5,
