@@ -6,6 +6,16 @@ jobs:
   build:
     docker:
       - image: circleci/node:12.7
+        environment:
+          DATABASE_HOST: localhost
+          DATABASE_USER: thetribe
+          DATABASE_NAME: thetribe
+          DATABASE_PASSWORD: 424242
+      - image: circleci/postgres:10.7
+        environment:
+          POSTGRES_USER: thetribe
+          POSTGRES_PASSWORD: 424242
+          POSTGRES_DB: thetribe
     working_directory: ~/node-react-starter-kit
     steps:
       - checkout
