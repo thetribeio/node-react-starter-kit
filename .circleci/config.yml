@@ -25,7 +25,7 @@ jobs:
             - ~/.cache/yarn
       - run:
           name: Test db migration
-          command: sequelize db:migrate
+          command: yarn sequelize db:migrate
       - run:
           name: Start app for tests
           background: true
