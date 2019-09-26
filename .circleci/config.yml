@@ -16,7 +16,6 @@ jobs:
           POSTGRES_USER: thetribe
           POSTGRES_PASSWORD: 424242
           POSTGRES_DB: thetribe
-    working_directory: ~/node-react-starter-kit
     steps:
       - checkout
       - restore_cache:
@@ -47,47 +46,33 @@ jobs:
           name: Lint app
           command: yarn lint
 
-  deploy_prod:
+  sentry-release:
     docker:
-      - image: circleci/node:12.7
+      - image: getsentry/sentry-cli:1.40.0
+        entrypoint: ''
+        environment:
+          SENTRY_PROJECT: $CIRCLE_PROJECT_REPONAME
     steps:
-      # TODO see https://circleci.com/orbs/registry/orb/radar/sentry
-      - run:
-          name: Deployment notification to Sentry
-          command: echo "Deployment notification to Sentry"  # TODO
-      - run:
-          name: Upload sourcemap to Sentry
-          command: echo "Upload sourcemap to Sentry"  # TODO
-
-  deploy_preprod:
-    docker:
-      - image: circleci/node:12.7
-    steps:
-      # TODO
-      - run:
-          name: Deployment notification to Sentry
-          command: echo "Deployment notification to Sentry"  # TODO
-      - run:
-          name: Upload sourcemap to Sentry
-          command: echo "Upload sourcemap to Sentry"  # TODO
+      - attach_workspace:
+          at: ~/project
+      - run: sentry-cli releases new --project ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1}
+      - run: sentry-cli releases files ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1} upload-sourcemaps build --ignore '*.css.map'
+      - run: sentry-cli releases finalize ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1}
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      - deploy_prod:
+      - sentry-release:
+          context: sentry
           requires:
             - build
           filters:
             branches:
-              only: master
-      - deploy_preprod:
-          requires:
-            - build
-          filters:
-            branches:
-              only: develop
+              only:
+                - develop
+                - master
   docker-lint:
     jobs:
       - docker/hadolint
