@@ -1,3 +1,5 @@
+![StarterKitBanner](public/StarterKitTheTribe.png)
+
 #### start the app
 
 To run locally the project you should first install the dependencies
@@ -112,8 +114,8 @@ module.exports = {
 
 ### Global & module style sheets
 
-You may import style sheets two ways in your app. 
-Firstly, if you important a style sheets from the directories `app/components` or `app/routes`, 
+You may import style sheets two ways in your app.
+Firstly, if you important a style sheets from the directories `app/components` or `app/routes`,
 your style will be imported as a module.
 It means you have to import it and manipulate it that way ;
 
@@ -125,7 +127,7 @@ import style from './style.css';
 <div className={style.myDiv} />
 ```
 
-However if you import a style sheet from elsewhere (node modules or another location in your sources), 
+However if you import a style sheet from elsewhere (node modules or another location in your sources),
 it wil be imported as a global. It means you have to import it that way ;
 
 ```js
