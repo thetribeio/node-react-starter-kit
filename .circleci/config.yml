@@ -36,43 +36,45 @@ jobs:
           name: Test db migration
           command: yarn sequelize db:migrate
       - run:
-          name: Start app for tests
-          background: true
-          command: yarn start
-      - run:
           name: Build app
           command: yarn build
       - run:
           name: Lint app
           command: yarn lint
 
-  sentry-release:
-    docker:
-      - image: getsentry/sentry-cli:1.40.0
-        entrypoint: ''
-        environment:
-          SENTRY_PROJECT: $CIRCLE_PROJECT_REPONAME
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: sentry-cli releases new --project ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1}
-      - run: sentry-cli releases files ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1} upload-sourcemaps build --ignore '*.css.map'
-      - run: sentry-cli releases finalize ${CIRCLE_PROJECT_REPONAME}@${CIRCLE_SHA1}
+# Example of Sentry release & sourcemap upload job
+# TODO while bootstrapping, setup your projet name, uncomment the job and uncomment
+# it's call in workflows
+# Note: You may need multiple sentry jobs if you have an app and an api for example
+#
+#  sentry-release:
+#    docker:
+#      - image: getsentry/sentry-cli:1.40.0
+#        entrypoint: ''
+#        environment:
+#          SENTRY_PROJECT: DEFINE-YOUR-PROJECT-NAME-HERE
+#    steps:
+#      - attach_workspace:
+#          at: ~/project
+#      - run: sentry-cli releases new --project ${SENTRY_PROJECT} ${SENTRY_PROJECT}@${CIRCLE_SHA1}
+#      - run: sentry-cli releases files ${SENTRY_PROJECT}@${CIRCLE_SHA1} upload-sourcemaps build --ignore '*.css.map'
+#      - run: sentry-cli releases finalize ${SENTRY_PROJECT}@${CIRCLE_SHA1}
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build
-      - sentry-release:
-          context: sentry
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
-                - master
+# TODO while bootstrapping, uncomment this block to activate workflow
+#      - sentry-release:
+#          context: sentry
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#                - master
   docker-lint:
     jobs:
       - docker/hadolint
