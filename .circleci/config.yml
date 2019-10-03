@@ -1,0 +1,80 @@
+version: 2.1
+orbs:
+  # Ref: https://circleci.com/orbs/registry/orb/circleci/docker
+  docker: circleci/docker@0.5.13
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12.7
+        environment:
+          DATABASE_HOST: localhost
+          DATABASE_USER: thetribe
+          DATABASE_NAME: thetribe
+          DATABASE_PASSWORD: 424242
+      - image: circleci/postgres:10.7
+        environment:
+          POSTGRES_USER: thetribe
+          POSTGRES_PASSWORD: 424242
+          POSTGRES_DB: thetribe
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-packages-{{ .Branch }}-
+            - yarn-packages-
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Test db migration
+          command: yarn sequelize db:migrate
+      - run:
+          name: Build app
+          command: yarn build
+      - run:
+          name: Lint app
+          command: yarn lint
+
+# Example of Sentry release & sourcemap upload job
+# TODO while bootstrapping, setup your projet name, uncomment the job and uncomment
+# it's call in workflows
+# Note: You may need multiple sentry jobs if you have an app and an api for example
+#
+#  sentry-release:
+#    docker:
+#      - image: getsentry/sentry-cli:1.40.0
+#        entrypoint: ''
+#        environment:
+#          SENTRY_PROJECT: DEFINE-YOUR-PROJECT-NAME-HERE
+#    steps:
+#      - attach_workspace:
+#          at: ~/project
+#      - run: sentry-cli releases new --project ${SENTRY_PROJECT} ${SENTRY_PROJECT}@${CIRCLE_SHA1}
+#      - run: sentry-cli releases files ${SENTRY_PROJECT}@${CIRCLE_SHA1} upload-sourcemaps build --ignore '*.css.map'
+#      - run: sentry-cli releases finalize ${SENTRY_PROJECT}@${CIRCLE_SHA1}
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+# TODO while bootstrapping, uncomment this block to activate workflow
+#      - sentry-release:
+#          context: sentry
+#          requires:
+#            - build
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#                - master
+  docker-lint:
+    jobs:
+      - docker/hadolint
