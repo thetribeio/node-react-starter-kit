@@ -1,5 +1,39 @@
 ![StarterKitBanner](public/StarterKitTheTribe.png)
 
+## Overview
+
+This repository contains the source code for Node-React-Starter-Kit made by theTribe.io developpers team.
+The starter kit is built on top of Node.js, Express, React and Redux, containing modern web development tools such as Webpack and Babel.
+
+A solid starting point for both professionals and newcomers to the industry.
+
+Front-end tools:
+
+* React
+* Redux
+* CSS/SCSS
+
+Back-end tools:
+
+* Express
+* Postgresql
+* Sequelize
+
+Functional Testing
+
+* Selenium
+* Cucumber.js
+* Saucelabs
+
+Dev Environment Configuration:
+
+* Docker
+
+
+## Getting Started
+
+### Installation
+
 #### start the app
 
 To run locally the project you should first install the dependencies
