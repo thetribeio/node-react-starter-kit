@@ -47,6 +47,7 @@ const getLocalBrowser = (browser, display) => {
     switch (browser) {
         case 'chrome':
             options = new chrome.Options();
+            options.addArguments('--no-sandbox');
             optionsFunc = 'setChromeOptions';
             break;
         case 'safari':
@@ -66,6 +67,7 @@ const getLocalBrowser = (browser, display) => {
     const builder = new Builder();
 
     return builder[optionsFunc](options)
+        .usingServer('http://selenium:4444/wd/hub')
         .forBrowser(browser)
         .build();
 };

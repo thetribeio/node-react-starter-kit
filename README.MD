@@ -72,15 +72,10 @@ not 1000 you will need to configure the images to use your user ID.
 
 You can get the your user ID by running `id -u`
 
-If your user ID is not 1000 you will need to add the following config to your `docker-compose.override.yml`
+If your user ID is not 1000 you will need to add the following config to your `.env`
 
-```yaml
-version: '2.0'
-services:
-  app:
-    build:
-      args:
-        UID: YourUID
+```
+UID=YourUID
 ```
 
 And then run `docker-compose build` to rebuild your containers.

@@ -10,5 +10,5 @@ When(/I press the button/, async function () {
 });
 
 Then(/"(.*)" is displayed in Home page/, async function (text) {
-    this.page.assertTextInClickMe(text);
+    await this.page.assertTextInClickMe(text);
 });

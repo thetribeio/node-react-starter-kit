@@ -9,12 +9,7 @@ class World {
         this.local = args.parameters.local;
         this.display = args.parameters.display;
         this.pageFactory = new Factory(this);
-
-        if (args.parameters.local) {
-            this.host = 'http://localhost:3000';
-        } else {
-            this.host = 'http://app.local:3000';
-        }
+        this.host = 'http://app.local:3000';
     }
 }
 
