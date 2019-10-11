@@ -1,7 +1,11 @@
-version: '2.0'
+version: '2.4'
+
 services:
     app:
-        build: .
+        build:
+            context: .
+            args:
+                UID: ${UID:-1000}
         environment:
             NODE_ENV: development
             DATABASE_USER: thetribe
@@ -13,9 +17,9 @@ services:
         volumes:
             - ./:/usr/src/project
         networks:
-          default:
-            aliases:
-              - app.local
+            default:
+                aliases:
+                    - app.local
     postgres:
         image: postgres:10.7
         environment:
@@ -25,5 +29,14 @@ services:
             POSTGRES_PASSWORD: 424242
         volumes:
             - db:/var/lib/postgresql/data
+    selenium:
+        build:
+            context: docker/selenium
+            args:
+                UID: ${UID:-1000}
+        environment:
+            DISPLAY: ${DISPLAY}
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix
 volumes:
     db:

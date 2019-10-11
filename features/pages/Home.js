@@ -13,7 +13,7 @@ class Home extends Base {
 
     async assertTextInClickMe(text) {
         const btnText = await this.driver.findElement(By.id('click-me')).getText();
-        expect(btnText).to.be.equal(text);
+        expect(btnText).toBe(text);
     }
 
     clickButton() {
