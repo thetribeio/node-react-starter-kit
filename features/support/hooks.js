@@ -89,7 +89,7 @@ After(async function ({ pickle: { name }, result: { status } }) {
             passed,
         });
         if (!passed) {
-            console.log(`Failed test video: https://app.saucelabs.com/tests/${jobId}`);
+            console.info(`Failed test video: https://app.saucelabs.com/tests/${jobId}`);
         }
     }
     this.driver.quit();
