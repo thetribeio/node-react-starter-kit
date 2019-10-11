@@ -7,6 +7,7 @@ Object.values(models).forEach((model) => {
     if (model.associate) {
         model.associate(models);
 
+        // eslint-disable-next-line no-param-reassign
         delete model.associate;
     }
 });
