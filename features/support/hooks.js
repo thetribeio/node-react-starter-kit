@@ -6,7 +6,7 @@ import firefox from 'selenium-webdriver/firefox';
 import chrome from 'selenium-webdriver/chrome';
 import safari from 'selenium-webdriver/safari';
 
-const { SAUCELABS_ACCESS_KEY, SAUCELABS_HOST, SAUCELABS_USER } = process.env;
+const { SAUCELABS_HOST, SAUCELABS_KEY, SAUCELABS_TUNNEL_IDENTIFIER, SAUCELABS_USER } = process.env;
 
 const capabilities = {
     ie: {
@@ -31,13 +31,14 @@ const capabilities = {
 const getBrowser = (browser) => new Builder()
     .withCapabilities({
         username: SAUCELABS_USER,
-        accessKey: SAUCELABS_ACCESS_KEY,
+        accessKey: SAUCELABS_KEY,
         host: SAUCELABS_HOST,
         port: 4445,
         implicit: 5000,
+        tunnelIdentifier: SAUCELABS_TUNNEL_IDENTIFIER,
         ...capabilities[browser],
     })
-    .usingServer(`http://${SAUCELABS_USER}:${SAUCELABS_ACCESS_KEY}@${SAUCELABS_HOST}:4445/wd/hub`)
+    .usingServer(`http://${SAUCELABS_USER}:${SAUCELABS_KEY}@${SAUCELABS_HOST}:4445/wd/hub`)
     .build();
 
 const getLocalBrowser = (browser, display) => {
@@ -82,7 +83,7 @@ Before(async function () {
 
 After(async function ({ pickle: { name }, result: { status } }) {
     if (!this.local) {
-        const sauceApi = new SauceLabs({ user: SAUCELABS_USER, key: SAUCELABS_ACCESS_KEY });
+        const sauceApi = new SauceLabs({ user: SAUCELABS_USER, key: SAUCELABS_KEY });
         // eslint-disable-next-line no-underscore-dangle
         const jobId = (await this.driver.getSession()).id_;
         const passed = 'passed' === status;

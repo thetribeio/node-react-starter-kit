@@ -1,9 +1,69 @@
 version: 2.1
+
 orbs:
-  # Ref: https://circleci.com/orbs/registry/orb/circleci/docker
-  docker: circleci/docker@0.5.13
+  saucelabs: saucelabs/sauce-connect@1.0.1
+
 jobs:
+  yarn-install:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-install-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+            - yarn-install-{{ checksum "package.json" }}
+            - yarn-install
+          paths:
+            - node_modules
+      - run:
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          key: yarn-install-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - node_modules
+
+  lint:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run: yarn lint:js
+      - run: yarn lint:css
+
+  lint-docker:
+    docker:
+      - image: hadolint/hadolint:latest-debian
+    steps:
+      - checkout
+      - run:
+          name: Lint .production/Dockerfile
+          command: hadolint .production/Dockerfile
+      - run:
+          name: Lint docker/selenium/Dockerfile
+          command: hadolint docker/selenium/Dockerfile
+      - run:
+          name: Lint Dockerfile
+          command: hadolint Dockerfile
+
   build:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Build app
+          command: yarn build
+
+  functional-tests:
     docker:
       - image: circleci/node:12.7
         environment:
@@ -11,6 +71,7 @@ jobs:
           DATABASE_USER: thetribe
           DATABASE_NAME: thetribe
           DATABASE_PASSWORD: 424242
+          SAUCELABS_HOST: localhost
       - image: circleci/postgres:10.7
         environment:
           POSTGRES_USER: thetribe
@@ -18,29 +79,37 @@ jobs:
           POSTGRES_DB: thetribe
     steps:
       - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - yarn-packages-{{ .Branch }}-
-            - yarn-packages-
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: Install Dependencies
-          command: yarn install
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
+          name: Wait for database
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
-          name: Test db migration
+          name: Run migrations
           command: yarn sequelize db:migrate
       - run:
-          name: Build app
-          command: yarn build
+          name: Start application
+          command: yarn start
+          background: true
       - run:
-          name: Lint app
-          command: yarn lint
+          name: Setup host
+          command: echo '127.0.0.1 app.local' | sudo tee -a /etc/hosts
+      - run:
+          name: Wait for app
+          command: 'dockerize -wait http://app.local:3000 -wait-http-header "Accept: */*" -timeout 1m'
+      - saucelabs/install
+      - saucelabs/open_tunnel:
+          tunnel_identifier: $CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM
+      - run:
+          name: Run tests
+          command: |
+            export SAUCELABS_TUNNEL_IDENTIFIER=$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM
+
+            yarn test:func:sauce:chrome
+            yarn test:func:sauce:firefox
+            #yarn test:func:sauce:ie
+            #yarn test:func:sauce:safari
+      - saucelabs/close_tunnel
 
 # Example of Sentry release & sourcemap upload job
 # TODO while bootstrapping, setup your projet name, uncomment the job and uncomment
@@ -62,9 +131,21 @@ jobs:
 
 workflows:
   version: 2
-  build-deploy:
+
+  build:
     jobs:
-      - build
+      - yarn-install
+      - lint:
+          requires:
+            - yarn-install
+      - lint-docker
+      - build:
+          requires:
+            - yarn-install
+      - functional-tests:
+          context: saucelabs
+          requires:
+            - yarn-install
 # TODO while bootstrapping, uncomment this block to activate workflow
 #      - sentry-release:
 #          context: sentry
@@ -75,6 +156,3 @@ workflows:
 #              only:
 #                - develop
 #                - master
-  docker-lint:
-    jobs:
-      - docker/hadolint

@@ -1,3 +1,4 @@
+# hadolint ignore=DL3006
 FROM thetribe/selenium
 
 # Configure user
