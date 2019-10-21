@@ -43,7 +43,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@thetribe/eslint-config-react": "^0.1.2",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^24.9.0",
     "babel-loader": "8.0.6",
     "babel-plugin-module-resolver": "^3.2.0",
     "css-loader": "^3.2.0",
