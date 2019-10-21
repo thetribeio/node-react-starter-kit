@@ -63,6 +63,17 @@ jobs:
           name: Build app
           command: yarn build
 
+  unit-tests:
+    docker:
+      - image: circleci/node:12.7
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Run tests
+          command: yarn test
+
   functional-tests:
     docker:
       - image: circleci/node:12.7
@@ -140,6 +151,9 @@ workflows:
             - yarn-install
       - lint-docker
       - build:
+          requires:
+            - yarn-install
+      - unit-tests:
           requires:
             - yarn-install
       - functional-tests:
