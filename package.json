@@ -37,7 +37,7 @@
     "source-map-support": "^0.5.13"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
+    "@babel/cli": "^7.6.4",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.5.5",
