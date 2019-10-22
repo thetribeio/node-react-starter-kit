@@ -39,7 +39,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
+    "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@thetribe/eslint-config-react": "^0.1.2",
