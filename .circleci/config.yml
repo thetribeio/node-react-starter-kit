@@ -6,7 +6,7 @@ orbs:
 jobs:
   yarn-install:
     docker:
-      - image: circleci/node:12.7
+      - image:  circleci/node:12.13.0
     steps:
       - checkout
       - restore_cache:
@@ -29,7 +29,7 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:12.7
+      - image: circleci/node:12.13.0
     steps:
       - checkout
       - attach_workspace:
@@ -54,7 +54,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:12.7
+      - image:  circleci/node:12.13.0
     steps:
       - checkout
       - attach_workspace:
@@ -65,7 +65,7 @@ jobs:
 
   unit-tests:
     docker:
-      - image: circleci/node:12.7
+      - image:  circleci/node:12.13.0
     steps:
       - checkout
       - attach_workspace:
@@ -76,7 +76,7 @@ jobs:
 
   functional-tests:
     docker:
-      - image: circleci/node:12.7
+      - image:  circleci/node:12.13.0
         environment:
           DATABASE_HOST: localhost
           DATABASE_USER: thetribe
