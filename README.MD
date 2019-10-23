@@ -164,3 +164,58 @@ import './style.css';
 ```
 
 You may either import CSS style sheets or SASS stylesheet (using the extension `.scss`).
+
+### Inject settings to frontend (appData)
+
+The backend renders the HTML entry point for your application.
+By doing so, it allows you to inject settings into your frontend application.
+
+First you've to push your data into an object on your server side.
+
+```js
+// api/index.js
+const appData = {
+    /* ... */
+    myInjectedSettings: 42,
+    /* ... */
+};
+```
+
+Then you may get those injected settings anywhere in your react scope.
+You may either use a `custom hook`.
+
+```js
+import { useAppData } from '@app/App';
+
+const MyComponent = () => {
+    const { myInjectedSettings } = useAppData();
+    
+    /* ... */
+};
+```
+
+Or use the `context consumer` directly.
+
+```js
+import { AppDataContext } from '@app/App';
+
+class MyComponent extends Component {
+    render() {
+        const { myInjectedSettings } = this.context;
+    
+        /* ... */
+    }
+}
+
+MyComponent.contextType = AppDataContext;
+```
+
+The injected settings (we call here `appData`) are also available in `thunk reducers`
+
+```js
+const asyncActionCreator = () => (dispatch, getState, { appData }) => {
+    const { myInjectedSettings } = appData;
+    
+    /* ... */
+};
+```
