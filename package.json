@@ -20,7 +20,7 @@
     "expect": "^24.9.0",
     "express": "^4.17.1",
     "history": "^4.10.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "pg": "^7.12.1",
     "pretty-error": "^2.1.1",
     "prop-types": "^15.7.2",
