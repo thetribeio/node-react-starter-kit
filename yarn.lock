@@ -2908,10 +2908,10 @@ cucumber-tag-expressions@^2.0.2:
   resolved "https://registry.yarnpkg.com/cucumber-tag-expressions/-/cucumber-tag-expressions-2.0.2.tgz#aac27aae3690818ec15235bd056282dad8a2d2b8"
   integrity sha512-DohmT4X641KX/sb96bdb7J2kXNcQBPrYmf3Oc5kiHCLfzFMWx/o2kB4JvjvQPZnYuA9lRt6pqtArM5gvUn4uzw==
 
-cucumber@^6.0.2:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-6.0.2.tgz#3c4fbf1f76e60ddee79ab58f137a62c897a4d7f0"
-  integrity sha512-yEwPYGvgS2KG6ODdUXQwWcxjyr/l31dmpGJsZSkJIXNLNNmieKVefTpf8zLj6+0V2TCPwkmUZt4+OIXv97duEw==
+cucumber@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-6.0.3.tgz#bf69ecc992772e580dabe265b2ed06ddab13d076"
+  integrity sha512-FSx7xdAQfFjcxp/iRBAuCFSXp2iJP1tF2Q5k/a67YgHiYbnwsD9F+UNv9ZG90LFHNsNQhb+67AmVxHkp4JRDpg==
   dependencies:
     assertion-error-formatter "^3.0.0"
     bluebird "^3.4.1"
@@ -8032,30 +8032,10 @@ resolve@1.1.7:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
-resolve@^1.10.0, resolve@^1.3.2, resolve@^1.5.0:
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
-  dependencies:
-    path-parse "^1.0.6"
-
-resolve@^1.11.0:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.11.1.tgz#ea10d8110376982fef578df8fc30b9ac30a07a3e"
-  integrity sha512-vIpgF6wfuJOZI7KKKSP+HmiKggadPQAdsp5HiC1mvqnfp0gF1vdwgBWZIdrVft9pgqoMFQN+R7BSWZiBxx+BBw==
-  dependencies:
-    path-parse "^1.0.6"
-
-resolve@^1.12.0, resolve@^1.3.3:
+resolve@^1.10.0, resolve@^1.11.0, resolve@^1.12.0, resolve@^1.3.2, resolve@^1.3.3, resolve@^1.4.0, resolve@^1.5.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.12.0.tgz#3fc644a35c84a48554609ff26ec52b66fa577df6"
   integrity sha512-B/dOmuoAik5bKcD6s6nXDCjzUKnaDvdkRyAk6rsmsKLipWj4797iothd7jmmUhWTfinVMU+wc56rYKsit2Qy4w==
-  dependencies:
-    path-parse "^1.0.6"
-
-resolve@^1.4.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.11.0.tgz#4014870ba296176b86343d50b60f3b50609ce232"
-  integrity sha512-WL2pBDjqT6pGUNSUzMw00o4T7If+z4H2x3Gz893WoUQ5KW8Vr9txp00ykiP16VBaZF5+j/OcXJHZ9+PCvdiDKw==
   dependencies:
     path-parse "^1.0.6"
 

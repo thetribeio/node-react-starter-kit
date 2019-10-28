@@ -16,7 +16,7 @@
     "@sentry/node": "^5.7.1",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
-    "cucumber": "^6.0.2",
+    "cucumber": "^6.0.3",
     "expect": "^24.9.0",
     "express": "^4.17.1",
     "history": "^4.10.1",
