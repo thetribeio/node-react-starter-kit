@@ -62,6 +62,11 @@ const config = {
 
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.mjs'],
+        // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
+        alias: {
+            '@api': path.resolve('./api'),
+            '@app': path.resolve('./app'),
+        },
     },
 
     // Don't attempt to continue if there are any errors.
@@ -89,6 +94,24 @@ const config = {
     devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
 };
 
+const styleRules = [
+    {
+        oneOf: [
+            {
+                loader: 'css-loader',
+                options: { localsConvention: 'camelCase', modules: true },
+                // only use module style in the directories components & routes
+                include: [
+                    path.join(rootDir, 'app/components'),
+                    path.join(rootDir, 'app/routes'),
+                ],
+            },
+            { loader: 'css-loader' },
+        ],
+    },
+    { loader: 'sass-loader', test: /\.scss$/ },
+];
+
 const clientConfig = {
     ...config,
 
@@ -108,10 +131,6 @@ const clientConfig = {
         // Webpack mutates resolve object, so clone it to avoid issues
         // https://github.com/webpack/webpack/issues/4817
         ...config.resolve,
-        // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
-        alias: {
-            '@app': path.resolve('./app'),
-        },
     },
 
     module: {
@@ -136,21 +155,7 @@ const clientConfig = {
                 test: /\.s?css$/,
                 rules: [
                     { loader: isDebug ? 'style-loader' : MiniCssExtractPlugin.loader },
-                    {
-                        oneOf: [
-                            {
-                                loader: 'css-loader',
-                                options: { localsConvention: 'camelCase', modules: true },
-                                // only use module style in the directories components & routes
-                                include: [
-                                    path.join(rootDir, 'app/components'),
-                                    path.join(rootDir, 'app/routes'),
-                                ],
-                            },
-                            { loader: 'css-loader' },
-                        ],
-                    },
-                    { loader: 'sass-loader', test: /\.scss$/ },
+                    ...styleRules,
                 ],
             },
         ],
@@ -159,7 +164,10 @@ const clientConfig = {
     plugins: [
         // Define free variables
         // https://webpack.js.org/plugins/define-plugin/
-        new webpack.DefinePlugin({ __DEV__: isDebug }),
+        new webpack.DefinePlugin({
+            'process.env.BROWSER': true,
+            __DEV__: isDebug,
+        }),
 
         // we need to build a manifest for the backend
         new WebpackAssetsManifest({
@@ -295,7 +303,7 @@ const serverConfig = {
     target: 'node',
 
     entry: {
-        server: ['@babel/polyfill/noConflict', './api/index.js'],
+        server: ['@babel/polyfill/noConflict', './api/index.jsx'],
     },
 
     output: {
@@ -310,10 +318,6 @@ const serverConfig = {
         // Webpack mutates resolve object, so clone it to avoid issues
         // https://github.com/webpack/webpack/issues/4817
         ...config.resolve,
-        // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
-        alias: {
-            '@api': path.resolve('./api'),
-        },
     },
 
     module: {
@@ -328,13 +332,25 @@ const serverConfig = {
 
             // Shared rules
             ...sharedRules,
+
+            // Style rules
+            {
+                test: /\.s?css$/,
+                rules: [
+                    { loader: 'null-loader' },
+                    ...styleRules,
+                ],
+            },
         ],
     },
 
     plugins: [
         // Define free variables
         // https://webpack.js.org/plugins/define-plugin/
-        new webpack.DefinePlugin({ __DEV__: isDebug }),
+        new webpack.DefinePlugin({
+            'process.env.BROWSER': false,
+            __DEV__: isDebug,
+        }),
 
         // Adds a banner to the top of each generated chunk
         // https://webpack.js.org/plugins/banner-plugin/

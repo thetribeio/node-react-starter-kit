@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import serialize from 'serialize-javascript';
 
-const Html = ({ appData, manifest: { js: scripts, css: styles } }) => (
+const Html = ({ appData, manifest: { js: scripts, css: styles }, children, state }) => (
     <html lang="fr">
         <head>
             <meta charSet="utf-8" />
@@ -11,18 +12,23 @@ const Html = ({ appData, manifest: { js: scripts, css: styles } }) => (
             {styles.map((style) => <link rel="stylesheet" type="text/css" href={style} key={style} />)}
         </head>
         <body>
-            <div id="app" data-app={JSON.stringify(appData)} />
+            <div id="app" data-app={JSON.stringify(appData)} dangerouslySetInnerHTML={{ __html: children }} />
+            <script
+                dangerouslySetInnerHTML={{ __html: `window.State=${serialize(state)}` }}
+            />
             {scripts.map((script) => <script src={script} key={script} />)}
         </body>
     </html>
 );
 
 Html.propTypes = {
+    children: PropTypes.string.isRequired,
     appData: PropTypes.shape({}).isRequired,
     manifest: PropTypes.shape({
         js: PropTypes.arrayOf(PropTypes.string).isRequired,
         css: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
+    state: PropTypes.shape({}).isRequired,
 };
 
 export default Html;
