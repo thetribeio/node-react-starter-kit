@@ -30,7 +30,7 @@ test('App provide a redux context', () => {
     });
 
     // render the app
-    TestRenderer.create(<App />);
+    TestRenderer.create(<App appData={{}} />);
 
     // ensure the Routes component has been rendered at least once
     expect(Routes.mock.calls.length).toBeGreaterThan(0);
@@ -48,7 +48,7 @@ test('App provide a router context', () => {
     Routes.mockImplementation(withRouter(FakeComponent));
 
     // render the app
-    TestRenderer.create(<App />);
+    TestRenderer.create(<App appData={{}} />);
 
     // ensure the Routes component has been rendered at least once
     expect(Routes.mock.calls.length).toBeGreaterThan(0);
