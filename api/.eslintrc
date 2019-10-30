@@ -6,5 +6,8 @@
         "import/resolver": {
             "alias": [["@api", "./api"]]
         }
+    },
+    "globals": {
+        "__DEV__": false
     }
 }
