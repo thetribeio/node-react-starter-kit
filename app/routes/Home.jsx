@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BookList from '../components/BookList';
 import styles from './Home.scss';
 import banner from '../images/StarterKitTheTribe.png';
 
@@ -12,6 +13,7 @@ const Home = () => {
             <button id="click-me" type="button" onClick={() => setCount(count + 1)}>
                 {`You clicked ${count} times`}
             </button>
+            <BookList />
         </div>
     );
 };

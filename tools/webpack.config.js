@@ -40,6 +40,7 @@ const getBabelRule = (envPresetOptions) => ({
         ],
 
         plugins: [
+            'graphql-tag',
             ['@babel/plugin-transform-runtime', {
                 corejs: false,
                 helpers: isDebug,
@@ -67,6 +68,12 @@ const getImageRule = (options) => ({
 });
 
 const sharedRules = [
+    // Graphql queries
+    {
+        test: /\.graphql$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+    },
     // Exclude dev modules from production build
     !isDebug && {
         test: path.resolve(rootDir, 'node_modules/react-deep-force-update/lib/index.js'),
