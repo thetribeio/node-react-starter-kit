@@ -38,10 +38,20 @@ const getBabelRule = (envPresetOptions) => ({
             // https://github.com/babel/babel/tree/master/packages/babel-preset-react
             ['@babel/preset-react', { development: isDebug }],
         ],
+
+        plugins: [
+            'graphql-tag',
+        ],
     },
 });
 
 const sharedRules = [
+    // Graphql queries
+    {
+        test: /\.graphql$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+    },
     // Exclude dev modules from production build
     !isDebug && {
         test: path.resolve(rootDir, 'node_modules/react-deep-force-update/lib/index.js'),

@@ -1,0 +1,9 @@
+query getBooks {
+    books {
+        id
+        title
+        writer {
+            email
+        }
+    }
+}

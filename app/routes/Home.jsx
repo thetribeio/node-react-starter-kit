@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import BookList from '../components/BookList';
 import styles from './Home.scss';
 
 const Home = () => {
@@ -10,6 +11,7 @@ const Home = () => {
             <button id="click-me" type="button" onClick={() => setCount(count + 1)}>
                 {`You clicked ${count} times`}
             </button>
+            <BookList />
         </div>
     );
 };
