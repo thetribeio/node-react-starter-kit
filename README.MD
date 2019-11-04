@@ -1,4 +1,4 @@
-![StarterKitBanner](public/StarterKitTheTribe.png)
+![StarterKitBanner](app/images/StarterKitTheTribe.png)
 
 ## Overview
 
@@ -189,7 +189,7 @@ import { useAppData } from '@app/App';
 
 const MyComponent = () => {
     const { myInjectedSettings } = useAppData();
-    
+
     /* ... */
 };
 ```
@@ -202,7 +202,7 @@ import { AppDataContext } from '@app/App';
 class MyComponent extends Component {
     render() {
         const { myInjectedSettings } = this.context;
-    
+
         /* ... */
     }
 }
@@ -215,7 +215,7 @@ The injected settings (we call here `appData`) are also available in `thunk redu
 ```js
 const asyncActionCreator = () => (dispatch, getState, { appData }) => {
     const { myInjectedSettings } = appData;
-    
+
     /* ... */
 };
 ```

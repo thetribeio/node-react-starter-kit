@@ -153,6 +153,22 @@ const clientConfig = {
                     { loader: 'sass-loader', test: /\.scss$/ },
                 ],
             },
+
+            // Images
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                rules: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[hash:20].[ext]',
+                        },
+                    },
+                    {
+                        loader: 'image-webpack-loader',
+                    },
+                ],
+            },
         ],
     },
 
