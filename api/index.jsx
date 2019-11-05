@@ -8,6 +8,7 @@ import expressGraphQL from 'express-graphql';
 import express from 'express';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
+import { StaticRouter } from 'react-router-dom';
 import App from '@app/App';
 import initLoaders from './loaders';
 import schema from './schema';
@@ -77,11 +78,14 @@ server.get('*', async (req, res, next) => {
             onCreateStore.store = instance;
         };
 
+        const Router = (props) => <StaticRouter location={req.originalUrl} {...props} />;
+
         const app = (
             <App
                 appData={appData}
                 onCreateStore={onCreateStore}
                 apolloClient={apolloClient}
+                routerComponent={Router}
             />
         );
 

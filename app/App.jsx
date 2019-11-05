@@ -3,7 +3,6 @@ import React, { PureComponent, createContext, useContext } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
-import { Router, StaticRouter } from 'react-router-dom';
 import createStore from './createStore';
 import Routes from './Routes';
 import './App.css';
@@ -11,8 +10,6 @@ import './App.css';
 export const AppDataContext = createContext({});
 
 export const useAppData = () => useContext(AppDataContext);
-
-const RouterComponent = process.env.BROWSER ? Router : StaticRouter;
 
 class App extends PureComponent {
     constructor(props) {
@@ -35,15 +32,15 @@ class App extends PureComponent {
     }
 
     render() {
-        const { appData, apolloClient } = this.props;
+        const { appData, apolloClient, routerComponent: Router } = this.props;
 
         return (
             <ApolloProvider client={apolloClient}>
                 <AppDataContext.Provider value={appData}>
                     <Provider store={this.store}>
-                        <RouterComponent history={this.history}>
+                        <Router history={this.history}>
                             <Routes />
-                        </RouterComponent>
+                        </Router>
                     </Provider>
                 </AppDataContext.Provider>
             </ApolloProvider>
@@ -55,6 +52,7 @@ App.propTypes = {
     appData: PropTypes.shape({}).isRequired,
     apolloClient: PropTypes.shape({}).isRequired,
     onCreateStore: PropTypes.func,
+    routerComponent: PropTypes.func.isRequired,
 };
 
 export default App;
