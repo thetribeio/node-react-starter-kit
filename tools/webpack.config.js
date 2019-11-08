@@ -38,6 +38,15 @@ const getBabelRule = (envPresetOptions) => ({
             // https://github.com/babel/babel/tree/master/packages/babel-preset-react
             ['@babel/preset-react', { development: isDebug }],
         ],
+
+        plugins: [
+            ['@babel/plugin-transform-runtime', {
+                corejs: false,
+                helpers: isDebug,
+                regenerator: true,
+                absoluteRuntime: true,
+            }],
+        ],
     },
 });
 
@@ -55,6 +64,7 @@ const config = {
     mode: isDebug ? 'development' : 'production',
 
     output: {
+        pathinfo: isDebug,
         publicPath: '/',
         filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
         chunkFilename: isDebug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
@@ -96,7 +106,10 @@ const clientConfig = {
     target: 'web',
 
     entry: {
-        client: ['@babel/polyfill', './app/index.jsx'],
+        client: [
+            isDebug && 'react-dev-utils/webpackHotDevClient',
+            './app/index.jsx',
+        ].filter(Boolean),
     },
 
     output: {
@@ -200,6 +213,11 @@ const clientConfig = {
                         for (const chunk of entry.chunks) {
                             // then on files for each chunk
                             for (const file of chunk.files) {
+                                if (file.endsWith('.hot-update.js')) {
+                                    // eslint-disable-next-line no-continue
+                                    continue;
+                                }
+
                                 if (file.endsWith('.js')) {
                                     entryMap.js.push(addPath(file));
                                 }
@@ -227,6 +245,9 @@ const clientConfig = {
         }),
 
         !isDebug && new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
+
+        // Hot Module Replacement plugin
+        isDebug && new webpack.HotModuleReplacementPlugin(),
 
         // Webpack Bundle Analyzer
         // https://github.com/th0r/webpack-bundle-analyzer
@@ -311,7 +332,7 @@ const serverConfig = {
     target: 'node',
 
     entry: {
-        server: ['@babel/polyfill/noConflict', './api/index.js'],
+        server: ['./api/index.js'],
     },
 
     output: {
@@ -320,6 +341,11 @@ const serverConfig = {
         filename: '[name].js',
         chunkFilename: 'chunks/[name].js',
         libraryTarget: 'commonjs2',
+
+        ...isDebug && {
+            hotUpdateMainFilename: 'updates/[hash].hot-update.json',
+            hotUpdateChunkFilename: 'updates/[id].[hash].hot-update.js',
+        },
     },
 
     resolve: {
@@ -359,6 +385,8 @@ const serverConfig = {
             raw: true,
             entryOnly: false,
         }),
+
+        isDebug && new webpack.HotModuleReplacementPlugin(),
 
         !isDebug && new PackagePlugin({
             additionalModules: ['source-map-support', 'sequelize-cli'],
