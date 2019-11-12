@@ -1121,18 +1121,18 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@thetribe/eslint-config-react@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config-react/-/eslint-config-react-0.2.1.tgz#f89befb6696e31977464c1e8677399b2d31e7e2e"
-  integrity sha512-UYg038pXK5+QfwpBOb4RbHpM/yUGC2CmKw11VntCoznRIqROUZnB9rcs0hmLvoQTNmnJ5IwytK0hW+75vxOFOw==
+"@thetribe/eslint-config-react@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config-react/-/eslint-config-react-0.2.2.tgz#ade4595401f64fd81d6d4dd851e9faeafce98305"
+  integrity sha512-YSihjwQ5VP0YYVzV7BJS6cNq+08JxCixJ0hZuLLHprtEjeN5t46BiUJmmQG2CvwZWPBZZVtPAQ4NOGjgHCMmAg==
   dependencies:
-    "@thetribe/eslint-config" "^0.2.0"
+    "@thetribe/eslint-config" "^0.2.1"
     eslint-config-airbnb "^18.0.1"
 
-"@thetribe/eslint-config@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config/-/eslint-config-0.2.0.tgz#e90193cf97e1e6d147be7e931e78fdfd2ff872ff"
-  integrity sha512-p5M49BV9UgHMxjvnErPSeXVpq4T5SR1iFC8wTvXXvmipQ12MdUEl1dTyyQI7N7vPqB9cY/qdlrcMXpa2YYJd2g==
+"@thetribe/eslint-config@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config/-/eslint-config-0.2.1.tgz#125cb229663798941fe72ed2565de9b5ec3179be"
+  integrity sha512-OqXtinYBM2MDM1x799S+4VIw1lCecmXwLqsghBxyANbak3l/BOZSb20fOea3PmnGmEQR5/1ONod3FzJhEdcWDQ==
   dependencies:
     eslint-config-airbnb-base "^14.0.0"
 
