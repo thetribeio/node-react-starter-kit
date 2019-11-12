@@ -14,9 +14,14 @@ import initLoaders from './loaders';
 import schema from './schema';
 import Html from './components/Html';
 import exampleController from './controllers/exampleController';
-// eslint-disable-next-line import/no-unresolved
-import manifest from './chunk-manifest.json';
 import createApolloClient from './utils/createApolloClient';
+
+const getManifest = () => {
+    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+    const requireManifest = __DEV__ ? require('import-fresh') : require;
+
+    return requireManifest('./chunk-manifest.json');
+};
 
 // appData to provide through the index.html
 // can be used to send environment settings to front
@@ -93,10 +98,12 @@ server.get('*', async (req, res, next) => {
 
         const body = renderToString(app);
 
+        const { client: manifest } = getManifest();
+
         const html = renderToStaticMarkup(
             <Html
                 appData={appData}
-                manifest={manifest.client}
+                manifest={manifest}
                 state={{ apollo: apolloClient.extract(), redux: onCreateStore.store.getState() }}
             >
                 {body}
