@@ -7,28 +7,22 @@ The starter kit is built on top of Node.js, Express, React and Redux, containing
 
 A solid starting point for both professionals and newcomers to the industry.
 
-Front-end tools:
+|**Front-end tools**|**Back-end tools**|**Functional Testing**|**Dev Environment Configuration**|
+|---|---|---|---|
+|React|Express|Selenium|Docker|
+|Redux|Postgresql|Cucumber.js|
+|CSS/SCSS|Sequelize|Saucelabs|
 
-* React
-* Redux
-* CSS/SCSS
+## Customization
 
-Back-end tools:
+The `master` branch of the starter kit does not include advanced integrations.
+However we do provide variants that you can use as a reference.
 
-* Express
-* Postgresql
-* Sequelize
+* [variant/ssr-graphql](https://github.com/thetribeio/node-react-starter-kit/tree/variant/ssr-graphql) : 
+Provide server side rendering support with a [GraphQL][gql] API running with [apollo][apollo] client.
 
-Functional Testing
-
-* Selenium
-* Cucumber.js
-* Saucelabs
-
-Dev Environment Configuration:
-
-* Docker
-
+[gql]: https://graphql.org
+[apollo]: https://www.apollographql.com/docs/react/
 
 ## Getting Started
 
