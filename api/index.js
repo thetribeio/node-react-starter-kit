@@ -8,8 +8,13 @@ import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
 import Html from './components/Html';
 import exampleController from './controllers/exampleController';
-// eslint-disable-next-line import/no-unresolved
-import manifest from './chunk-manifest.json';
+
+const getManifest = () => {
+    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+    const requireManifest = __DEV__ ? require('import-fresh') : require;
+
+    return requireManifest('./chunk-manifest.json');
+};
 
 // appData to provide through the index.html
 // can be used to send environment settings to front
@@ -44,14 +49,35 @@ server.use('/example', exampleController);
 // then fallback
 server.use(history());
 
-// prepare the html for index.html
-const element = createElement(Html, { appData, manifest: manifest.client });
-const html = `<!doctype html>${renderToStaticMarkup(element)}`;
+const renderHtml = () => {
+    // get the manifest (and support async manifest updates on dev mode)
+    const { client: manifest } = getManifest();
+
+    // prepare the html for index.html
+    const element = createElement(Html, {
+        appData,
+        manifest,
+    });
+
+    return `<!doctype html>${renderToStaticMarkup(element)}`;
+};
+
+let getHtml;
+
+if (__DEV__) {
+    // on development we always render html on request
+    getHtml = renderHtml;
+} else {
+    // on production we render the html once only
+    const html = renderHtml();
+
+    getHtml = () => html;
+}
 
 // serve it
 server.get('/index.html', (req, res) => {
     res.setHeader('Cache-Control', 'max-age=0, no-cache');
-    res.send(html);
+    res.send(getHtml());
 });
 
 // Use the sentry error handler before any other error handler
@@ -66,7 +92,8 @@ pe.skipPackage('express');
 // eslint-disable-next-line no-unused-vars
 server.use((err, req, res, next) => {
     console.error(pe.render(err));
-    res.status('500').send('Internal error');
+    res.status('500')
+        .send('Internal error');
 });
 
 // on production mode (without the HOT module) we start ourselves the web server

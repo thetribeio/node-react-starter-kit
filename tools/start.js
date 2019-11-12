@@ -1,13 +1,21 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
 import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
+import WebpackDevServer from 'webpack-dev-server';
+import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
+import clearConsole from 'react-dev-utils/clearConsole';
+import openBrowser from 'react-dev-utils/openBrowser';
+import chalk from 'react-dev-utils/chalk';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
+import evalSourceMapMiddleware from 'react-dev-utils/evalSourceMapMiddleware';
 import webpackConfig from './webpack.config';
 import run from './run';
 import clean from './clean';
+
+const isInteractive = process.stdout.isTTY;
+const host = process.env.HOST || '0.0.0.0';
+const port = parseInt(process.env.PORT, 10) || 3000;
+const urls = prepareUrls('http', host, port);
 
 const watchOptionsConfigFile = path.resolve(__dirname, '../watchOptions.config.js');
 
@@ -31,54 +39,19 @@ const createCompilationPromise = (name, compiler, config) => new Promise((resolv
     });
 });
 
-let server;
-
 /**
  * Launches a development web server with "live reload" functionality -
  * synchronizing URLs, interactions and code changes across multiple devices.
  */
 async function start() {
-    if (server) {
-        return server;
-    }
-
-    // create an express server
-    server = express();
-    // use the error overlay middleware to provide a better display for errors
-    server.use(errorOverlayMiddleware());
-    // serve static files from the server
-    server.use(express.static(path.resolve(__dirname, '../public')));
-
-    // get the client webpack config
-    const clientConfig = webpackConfig.find((config) => 'client' === config.name);
-
-    // add webpackHotDevClient to its entry and ensure the polyfill is first
-    clientConfig.entry.client = ['./tools/lib/webpackHotDevClient.js', ...clientConfig.entry.client]
-        .sort((a, b) => b.includes('polyfill') - a.includes('polyfill'));
-
-    // use the hash instead of chunkhash
-    clientConfig.output.filename = clientConfig.output.filename.replace('chunkhash', 'hash');
-    clientConfig.output.chunkFilename = clientConfig.output.chunkFilename.replace('chunkhash', 'hash');
-    // remove the null loader (used to nullify the import of react-deep-force-update
-    clientConfig.module.rules = clientConfig.module.rules.filter((x) => x.loader !== 'null-loader');
-    // then push the HOT plugin
-    clientConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-
-    // get the server webpack config
-    const serverConfig = webpackConfig.find((config) => 'server' === config.name);
-    // configure the HOT
-    serverConfig.output.hotUpdateMainFilename = 'updates/[hash].hot-update.json';
-    serverConfig.output.hotUpdateChunkFilename = 'updates/[id].[hash].hot-update.js';
-    // remove null loaders (might be critical for SSR)
-    serverConfig.module.rules = serverConfig.module.rules.filter((x) => x.loader !== 'null-loader');
-    // and finally push the HOT plugin
-    serverConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+    const [clientConfig, serverConfig] = webpackConfig;
 
     //  clean the build directory
     await run(clean);
 
     // instance the main webpack compiler
     const multiCompiler = webpack(webpackConfig);
+
     // and dissociate from it our client & server compiler
     const clientCompiler = multiCompiler.compilers.find((compiler) => 'client' === compiler.name);
     const serverCompiler = multiCompiler.compilers.find((compiler) => 'server' === compiler.name);
@@ -87,60 +60,71 @@ async function start() {
     const clientPromise = createCompilationPromise('client', clientCompiler, clientConfig);
     const serverPromise = createCompilationPromise('server', serverCompiler, serverConfig);
 
-    // configure the webpack dev middleware
-    // https://github.com/webpack/webpack-dev-middleware
-    const devMiddleware = webpackDevMiddleware(clientCompiler, {
-        publicPath: clientConfig.output.publicPath,
-        logLevel: 'silent',
+    let api; // app instance will remain here
+    let apiPromise; // promise resolving the server
+    let apiPromiseResolve; // resolve callback of the same promise
+    let apiPromiseIsResolved = true; // has the promise been resolved already
+
+    // webpack dev server (with HMR)
+    const devServer = new WebpackDevServer(clientCompiler, {
+        disableHostCheck: true,
+        compress: true,
+        clientLogLevel: 'none',
+        hot: true,
+        publicPath: '/',
+        quiet: true,
         watchOptions,
+        host,
+        overlay: false,
+        historyApiFallback: false,
+        public: urls.lanUrlForConfig,
+        after(app) {
+            // redirect the request to the resolved server
+            app.use((req, res) => apiPromise
+                .then(() => api.handle(req, res))
+                .catch((error) => console.error(error)));
+        },
+        before(app, server) {
+            // apply middlewares for dev purposes
+            app.use(evalSourceMapMiddleware(server));
+            app.use(errorOverlayMiddleware());
+            // we have to manually handle the root route
+            app.get('/', (req, res) => apiPromise
+                .then(() => api.handle(req, res))
+                .catch((error) => console.error(error)));
+        },
+        writeToDisk: true,
     });
-    server.use(devMiddleware);
-
-    // then configure the webpack hot middleware
-    // https://github.com/glenjamin/webpack-hot-middleware
-    server.use(webpackHotMiddleware(clientCompiler, { log: false }));
-
-    let appPromise; // promise resolving the server
-    let appPromiseResolve; // resolve callback of the same promise
-    let appPromiseIsResolved = true; // has the promise been resolved already
 
     // listen on the server compilations
     serverCompiler.hooks.compile.tap('server', () => {
-        if (!appPromiseIsResolved) {
+        if (!apiPromiseIsResolved) {
             // it has not been resolved so nothing to do yet
             return;
         }
 
         // inform we have not resolved instance
-        appPromiseIsResolved = false;
+        apiPromiseIsResolved = false;
 
-        // set the resolve callback as appPromiseResolve and save the promise itself as appPromise
+        // set the resolve callback as apiPromiseResolve and save the promise itself as apiPromise
         // eslint-disable-next-line no-return-assign
-        appPromise = new Promise((resolve) => (appPromiseResolve = resolve));
+        apiPromise = new Promise((resolve) => (apiPromiseResolve = resolve));
     });
-
-    // app instance will remain here
-    let app;
-
-    // redirect the request to the resolved server
-    server.use((req, res) => appPromise
-        .then(() => app.handle(req, res))
-        .catch((error) => console.error(error)));
 
     function checkForUpdate(fromUpdate) {
         // hell of a prefix...
         const hmrPrefix = '[\x1b[35mHMR\x1b[0m] ';
 
-        if (!app.hot) {
+        if (!api.hot) {
             // Cannot do anything without the HOT module
             throw new Error(`${hmrPrefix}Hot Module Replacement is disabled.`);
         }
 
-        if (app.hot.status() !== 'idle') {
+        if (api.hot.status() !== 'idle') {
             return Promise.resolve();
         }
 
-        return app.hot
+        return api.hot
             .check(true)
             .then((updatedModules) => {
                 if (!updatedModules) {
@@ -160,14 +144,14 @@ async function start() {
                 }
             })
             .catch((error) => {
-                if (['abort', 'fail'].includes(app.hot.status())) {
+                if (['abort', 'fail'].includes(api.hot.status())) {
                     console.warn(`${hmrPrefix}Cannot apply update.`);
                     // we cannot apply the update so we will reload the whole server
                     // but first delete the node cache
                     delete require.cache[require.resolve('../build/server')];
                     // now we can get the latest version of our server
                     // eslint-disable-next-line global-require, import/no-unresolved
-                    app = require('../build/server').default;
+                    api = require('../build/server').default;
                     console.warn(`${hmrPrefix}Server has been reloaded.`);
                 } else {
                     console.warn(`${hmrPrefix}Update failed: ${error.stack || error.message}`);
@@ -177,11 +161,11 @@ async function start() {
 
     // watch the server compiler
     serverCompiler.watch(watchOptions, (error, stats) => {
-        if (app && !error && !stats.hasErrors()) {
+        if (api && !error && !stats.hasErrors()) {
             // first check for updates
             checkForUpdate().then(() => {
-                appPromiseIsResolved = true;
-                appPromiseResolve();
+                apiPromiseIsResolved = true;
+                apiPromiseResolve();
             });
         }
     });
@@ -192,18 +176,27 @@ async function start() {
 
     // loader our server for the first time
     // eslint-disable-next-line global-require, import/no-unresolved
-    app = require('../build/server').default;
-    appPromiseIsResolved = true;
-    appPromiseResolve();
+    api = require('../build/server').default;
+    apiPromiseIsResolved = true;
+    apiPromiseResolve();
 
-    // launch the server
-    const port = process.env.PORT || 3000;
+    // Launch WebpackDevServer.
+    devServer.listen(port, host, (err) => {
+        if (err) {
+            console.error(err);
 
-    server.listen(port, () => {
-        console.info(`The server is running at http://localhost:${port}/`);
+            return;
+        }
+
+        if (isInteractive) {
+            clearConsole();
+        }
+
+        console.info(chalk.cyan('Starting the development server...\n'));
+        openBrowser(urls.localUrlForBrowser);
     });
 
-    return server;
+    return devServer;
 }
 
 export default start;

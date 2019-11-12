@@ -36,6 +36,7 @@
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.2",
     "@babel/node": "^7.7.0",
+    "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-react": "^7.7.0",
     "@thetribe/eslint-config-react": "^0.2.1",
@@ -55,6 +56,7 @@
     "glob": "^7.1.6",
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^6.0.0",
+    "import-fresh": "^3.1.0",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^0.5.1",
@@ -74,8 +76,7 @@
     "webpack": "^4.41.2",
     "webpack-assets-manifest": "^3.1.1",
     "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0",
+    "webpack-dev-server": "^3.9.0",
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
