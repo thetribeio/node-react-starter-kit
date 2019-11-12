@@ -214,7 +214,6 @@ const clientConfig = {
                             // then on files for each chunk
                             for (const file of chunk.files) {
                                 if (file.endsWith('.hot-update.js')) {
-                                    // eslint-disable-next-line no-continue
                                     continue;
                                 }
 
