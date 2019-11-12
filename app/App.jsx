@@ -16,26 +16,34 @@ class App extends PureComponent {
         super(props);
 
         this.history = createBrowserHistory();
-        this.store = createStore({}, { history: this.history, appData: props.appData });
+
+        this.store = createStore({}, {
+            history: this.history,
+            appData: props.appData,
+            apolloClient: props.apolloClient,
+        });
     }
 
     render() {
-        const { appData } = this.props;
+        const { appData, apolloClient } = this.props;
 
         return (
-            <AppDataContext.Provider value={appData}>
-                <Provider store={this.store}>
-                    <Router history={this.history}>
-                        <Routes />
-                    </Router>
-                </Provider>
-            </AppDataContext.Provider>
+            <ApolloProvider client={apolloClient}>
+                <AppDataContext.Provider value={appData}>
+                    <Provider store={this.store}>
+                        <Router history={this.history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </AppDataContext.Provider>
+            </ApolloProvider>
         );
     }
 }
 
 App.propTypes = {
     appData: PropTypes.shape({}).isRequired,
+    apolloClient: PropTypes.shape({}).isRequired,
 };
 
 export default App;

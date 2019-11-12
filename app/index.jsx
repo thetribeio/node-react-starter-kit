@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/browser';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import deepForceUpdate from 'react-deep-force-update';
 import ErrorBoundary from './components/ErrorBoundary';
+import apolloClient from './apolloClient';
 import App from './App';
 
 // get the container
@@ -24,7 +25,7 @@ let appInstance = null;
 // Re-render the app when window.location changes
 const renderApp = () => {
     try {
-        let appElement = <App appData={appData} />;
+        let appElement = <App appData={appData} apolloClient={apolloClient} />;
 
         if (!__DEV__) {
             appElement = (
