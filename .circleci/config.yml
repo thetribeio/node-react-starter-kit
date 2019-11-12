@@ -62,6 +62,10 @@ jobs:
       - run:
           name: Build app
           command: yarn build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - build
 
   unit-tests:
     docker:
