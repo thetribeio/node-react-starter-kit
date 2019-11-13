@@ -50,6 +50,22 @@ const getBabelRule = (envPresetOptions) => ({
     },
 });
 
+const getImageRule = (options) => ({
+    test: /\.(png|jpg|gif|svg)$/,
+    rules: [
+        {
+            loader: 'file-loader',
+            options: {
+                name: '[hash:20].[ext]',
+                ...options,
+            },
+        },
+        {
+            loader: 'image-webpack-loader',
+        },
+    ],
+});
+
 const sharedRules = [
     // Exclude dev modules from production build
     !isDebug && {
@@ -98,6 +114,24 @@ const config = {
     // https://webpack.js.org/configuration/devtool/#devtool
     devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
 };
+
+const styleRules = [
+    {
+        oneOf: [
+            {
+                loader: 'css-loader',
+                options: { localsConvention: 'camelCase', modules: true },
+                // only use module style in the directories components & routes
+                include: [
+                    path.join(rootDir, 'app/components'),
+                    path.join(rootDir, 'app/routes'),
+                ],
+            },
+            { loader: 'css-loader' },
+        ],
+    },
+    { loader: 'sass-loader', test: /\.scss$/ },
+];
 
 const clientConfig = {
     ...config,
@@ -149,39 +183,12 @@ const clientConfig = {
                 test: /\.s?css$/,
                 rules: [
                     { loader: isDebug ? 'style-loader' : MiniCssExtractPlugin.loader },
-                    {
-                        oneOf: [
-                            {
-                                loader: 'css-loader',
-                                options: { localsConvention: 'camelCase', modules: true },
-                                // only use module style in the directories components & routes
-                                include: [
-                                    path.join(rootDir, 'app/components'),
-                                    path.join(rootDir, 'app/routes'),
-                                ],
-                            },
-                            { loader: 'css-loader' },
-                        ],
-                    },
-                    { loader: 'sass-loader', test: /\.scss$/ },
+                    ...styleRules,
                 ],
             },
 
             // Images
-            {
-                test: /\.(png|jpg|gif|svg)$/,
-                rules: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[hash:20].[ext]',
-                        },
-                    },
-                    {
-                        loader: 'image-webpack-loader',
-                    },
-                ],
-            },
+            getImageRule(),
         ],
     },
 
@@ -369,6 +376,9 @@ const serverConfig = {
 
             // Shared rules
             ...sharedRules,
+
+            // Images
+            getImageRule({ emitFile: false }),
         ],
     },
 
