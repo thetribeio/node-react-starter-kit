@@ -4,10 +4,13 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import express from 'express';
+import expressGraphQL from 'express-graphql';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
 import Html from './components/Html';
 import exampleController from './controllers/exampleController';
+import initLoaders from './loaders';
+import schema from './schema';
 
 const getManifest = () => {
     // eslint-disable-next-line global-require, import/no-extraneous-dependencies
@@ -42,6 +45,22 @@ server.use(express.json());
 // serve public files
 const statics = express.static(path.resolve(__dirname, 'public'));
 server.use(statics);
+
+const generateApolloSettings = (request) => ({
+    schema,
+    rootValue: { request },
+    context: { loaders: initLoaders(request), request },
+});
+
+// graphql endpoint
+server.use(
+    '/graphql',
+    expressGraphQL((request) => ({
+        graphiql: __DEV__,
+        pretty: __DEV__,
+        ...generateApolloSettings(request),
+    })),
+);
 
 // controllers
 server.use('/example', exampleController);
