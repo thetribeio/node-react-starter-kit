@@ -56,7 +56,7 @@
     "glob": "^7.1.6",
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^6.0.0",
-    "import-fresh": "^3.1.0",
+    "import-fresh": "^3.2.1",
     "jest": "^24.9.0",
     "mini-css-extract-plugin": "^0.8.0",
     "mkdirp": "^0.5.1",
