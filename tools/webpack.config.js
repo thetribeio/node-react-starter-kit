@@ -40,6 +40,7 @@ const getBabelRule = (envPresetOptions) => ({
         ],
 
         plugins: [
+            'graphql-tag',
             ['@babel/plugin-transform-runtime', {
                 corejs: false,
                 helpers: isDebug,
@@ -50,7 +51,29 @@ const getBabelRule = (envPresetOptions) => ({
     },
 });
 
+const getImageRule = (options) => ({
+    test: /\.(png|jpg|gif|svg)$/,
+    rules: [
+        {
+            loader: 'file-loader',
+            options: {
+                name: '[hash:20].[ext]',
+                ...options,
+            },
+        },
+        {
+            loader: 'image-webpack-loader',
+        },
+    ],
+});
+
 const sharedRules = [
+    // Graphql queries
+    {
+        test: /\.graphql$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+    },
     // Exclude dev modules from production build
     !isDebug && {
         test: path.resolve(rootDir, 'node_modules/react-deep-force-update/lib/index.js'),
@@ -173,20 +196,7 @@ const clientConfig = {
             },
 
             // Images
-            {
-                test: /\.(png|jpg|gif|svg)$/,
-                rules: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[hash:20].[ext]',
-                        },
-                    },
-                    {
-                        loader: 'image-webpack-loader',
-                    },
-                ],
-            },
+            getImageRule(),
         ],
     },
 
@@ -222,7 +232,6 @@ const clientConfig = {
                             // then on files for each chunk
                             for (const file of chunk.files) {
                                 if (file.endsWith('.hot-update.js')) {
-                                    // eslint-disable-next-line no-continue
                                     continue;
                                 }
 
@@ -385,21 +394,7 @@ const serverConfig = {
             },
 
             // Images
-            {
-                test: /\.(png|jpg|gif|svg)$/,
-                rules: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[hash:20].[ext]',
-                            emitFile: false,
-                        },
-                    },
-                    {
-                        loader: 'image-webpack-loader',
-                    },
-                ],
-            },
+            getImageRule({ emitFile: false }),
         ],
     },
 
