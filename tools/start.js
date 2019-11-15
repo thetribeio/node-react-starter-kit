@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import express from 'express';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
@@ -85,6 +86,8 @@ async function start() {
                 .catch((error) => console.error(error)));
         },
         before(app, server) {
+            // serve public files
+            app.use(express.static(path.resolve(__dirname, '../public')));
             // apply middlewares for dev purposes
             app.use(evalSourceMapMiddleware(server));
             app.use(errorOverlayMiddleware());

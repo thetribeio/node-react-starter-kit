@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history';
 import React, { PureComponent, createContext, useContext } from 'react';
-import { ApolloProvider } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import createStore from './createStore';
 import Routes from './Routes';

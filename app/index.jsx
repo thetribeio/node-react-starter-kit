@@ -6,8 +6,8 @@ import * as Sentry from '@sentry/browser';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import deepForceUpdate from 'react-deep-force-update';
 import { Router } from 'react-router-dom';
-import apolloClient from './apolloClient';
 import ErrorBoundary from './components/ErrorBoundary';
+import apolloClient from './apolloClient';
 import App from './App';
 
 // get the container

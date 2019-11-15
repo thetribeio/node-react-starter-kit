@@ -4,21 +4,25 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { getDataFromTree } from 'react-apollo';
 import * as Sentry from '@sentry/node';
 import cors from 'cors';
-import expressGraphQL from 'express-graphql';
 import express from 'express';
+import expressGraphQL from 'express-graphql';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
 import { StaticRouter } from 'react-router-dom';
 import App from '@app/App';
-import initLoaders from './loaders';
-import schema from './schema';
 import Html from './components/Html';
 import exampleController from './controllers/exampleController';
 import createApolloClient from './utils/createApolloClient';
+import initLoaders from './loaders';
+import schema from './schema';
 
 const getManifest = () => {
-    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-    const requireManifest = __DEV__ ? require('import-fresh') : require;
+    let requireManifest = require;
+
+    if (__DEV__) {
+        // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+        requireManifest = require('import-fresh');
+    }
 
     return requireManifest('./chunk-manifest.json');
 };
