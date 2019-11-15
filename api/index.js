@@ -10,8 +10,12 @@ import Html from './components/Html';
 import exampleController from './controllers/exampleController';
 
 const getManifest = () => {
-    // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-    const requireManifest = __DEV__ ? require('import-fresh') : require;
+    let requireManifest = require;
+
+    if (__DEV__) {
+        // eslint-disable-next-line global-require, import/no-extraneous-dependencies
+        requireManifest = require('import-fresh');
+    }
 
     return requireManifest('./chunk-manifest.json');
 };
