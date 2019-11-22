@@ -52,7 +52,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
     "expect": "^24.9.0",
-    "file-loader": "^4.2.0",
+    "file-loader": "^4.3.0",
     "glob": "^7.1.6",
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^6.0.0",
