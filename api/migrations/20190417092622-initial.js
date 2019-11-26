@@ -5,7 +5,7 @@ export const up = async (queryInterface, Sequelize) => {
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV4,
         },
-        email: Sequelize.STRING,
+        email: { type: Sequelize.STRING, unique: true },
         password: Sequelize.STRING,
         is_active: { type: Sequelize.BOOLEAN, defaultValue: true },
         created_at: { allowNull: false, type: Sequelize.DATE },
