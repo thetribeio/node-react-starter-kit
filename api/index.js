@@ -118,18 +118,13 @@ server.use((err, req, res, next) => {
         .send('Internal error');
 });
 
-// on production mode (without the HOT module) we start ourselves the web server
-if (!module.hot) {
+// on production mode we start ourselves the web server
+if (!__DEV__) {
     const port = process.env.PORT || 3000;
 
     server.listen(port, () => {
         console.info(`The server is running at http://localhost:${port}/`);
     });
-}
-
-// share the HOT module on export
-if (module.hot) {
-    server.hot = module.hot;
 }
 
 // export the web server
