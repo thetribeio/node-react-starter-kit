@@ -9,7 +9,7 @@ ENV PATH="/usr/src/app/node_modules/.bin:${PATH}"
 COPY package.json yarn.lock ./
 RUN yarn install
 
-COPY babel.config.js index.html ./
+COPY babel.config.js ./
 COPY tools ./tools
 COPY api ./api
 COPY app ./app

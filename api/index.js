@@ -13,14 +13,13 @@ import initLoaders from './loaders';
 import schema from './schema';
 
 const getManifest = () => {
-    let requireManifest = require;
-
     if (__DEV__) {
         // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-        requireManifest = require('import-fresh');
+        return require('import-fresh')('./chunk-manifest.json');
     }
 
-    return requireManifest('./chunk-manifest.json');
+    // eslint-disable-next-line global-require, import/no-unresolved
+    return require('./chunk-manifest.json');
 };
 
 // appData to provide through the index.html

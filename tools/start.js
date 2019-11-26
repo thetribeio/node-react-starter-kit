@@ -66,6 +66,15 @@ async function start() {
     let apiPromiseResolve; // resolve callback of the same promise
     let apiPromiseIsResolved = true; // has the promise been resolved already
 
+    const handleByServer = async (req, res, next) => {
+        try {
+            await apiPromise;
+            api.handle(req, res);
+        } catch (error) {
+            next(error);
+        }
+    };
+
     // webpack dev server (with HMR)
     const devServer = new WebpackDevServer(clientCompiler, {
         disableHostCheck: true,
@@ -81,9 +90,7 @@ async function start() {
         public: urls.lanUrlForConfig,
         after(app) {
             // redirect the request to the resolved server
-            app.use((req, res) => apiPromise
-                .then(() => api.handle(req, res))
-                .catch((error) => console.error(error)));
+            app.use(handleByServer);
         },
         before(app, server) {
             // serve public files
@@ -92,9 +99,7 @@ async function start() {
             app.use(evalSourceMapMiddleware(server));
             app.use(errorOverlayMiddleware());
             // we have to manually handle the root route
-            app.get('/', (req, res) => apiPromise
-                .then(() => api.handle(req, res))
-                .catch((error) => console.error(error)));
+            app.get('/', handleByServer);
         },
         writeToDisk: true,
     });
