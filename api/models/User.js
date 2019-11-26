@@ -7,7 +7,7 @@ const User = sequelize.define('user', {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
     },
-    email: DataTypes.STRING,
+    email: { type: DataTypes.STRING, unique: true },
     password: DataTypes.STRING,
     isActive: { type: DataTypes.BOOLEAN, defaultValue: true },
 });

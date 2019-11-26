@@ -11,20 +11,18 @@ import history from 'connect-history-api-fallback';
 import { StaticRouter } from 'react-router-dom';
 import App from '@app/App';
 import Html from './components/Html';
-import exampleController from './controllers/exampleController';
 import createApolloClient from './utils/createApolloClient';
 import initLoaders from './loaders';
 import schema from './schema';
 
 const getManifest = () => {
-    let requireManifest = require;
-
     if (__DEV__) {
         // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-        requireManifest = require('import-fresh');
+        return require('import-fresh')('./chunk-manifest.json');
     }
 
-    return requireManifest('./chunk-manifest.json');
+    // eslint-disable-next-line global-require, import/no-unresolved
+    return require('./chunk-manifest.json');
 };
 
 // appData to provide through the index.html
@@ -69,9 +67,6 @@ server.use(
         ...generateApolloSettings(request),
     })),
 );
-
-// controllers
-server.use('/example', exampleController);
 
 // then fallback
 server.use(history());
@@ -133,21 +128,17 @@ pe.skipPackage('express');
 // eslint-disable-next-line no-unused-vars
 server.use((err, req, res, next) => {
     console.error(pe.render(err));
-    res.status('500').send('Internal error');
+    res.status('500')
+        .send('Internal error');
 });
 
-// on production mode (without the HOT module) we start ourselves the web server
-if (!module.hot) {
+// on production mode we start ourselves the web server
+if (!__DEV__) {
     const port = process.env.PORT || 3000;
 
     server.listen(port, () => {
         console.info(`The server is running at http://localhost:${port}/`);
     });
-}
-
-// share the HOT module on export
-if (module.hot) {
-    server.hot = module.hot;
 }
 
 // export the web server

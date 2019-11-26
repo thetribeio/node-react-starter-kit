@@ -414,8 +414,6 @@ const serverConfig = {
             entryOnly: false,
         }),
 
-        isDebug && new webpack.HotModuleReplacementPlugin(),
-
         !isDebug && new PackagePlugin({
             additionalModules: ['source-map-support', 'sequelize-cli'],
         }),

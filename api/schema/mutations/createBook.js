@@ -5,6 +5,7 @@ import {
 } from 'graphql';
 import { Book } from '@api/models';
 import { BookType } from '../types';
+import { transformSequelizeErrors, withHandledErrors, withMiddlewares } from '../utils';
 
 export default {
     args: {
@@ -12,5 +13,9 @@ export default {
         title: { type: new NonNull(StringType) },
     },
     type: new NonNull(BookType),
-    resolve: (request, args) => Book.create(args),
+    resolve: withMiddlewares(
+        withHandledErrors,
+        transformSequelizeErrors,
+        (request, args) => Book.create(args),
+    ),
 };

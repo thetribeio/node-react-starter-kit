@@ -5,6 +5,7 @@ import {
     GraphQLString as StringType,
     GraphQLBoolean as BooleanType,
 } from 'graphql';
+import { withErrors } from './ErrorType';
 
 const UserType = new ObjectType({
     name: 'User',
@@ -14,5 +15,7 @@ const UserType = new ObjectType({
         isActive: { type: new NonNull(BooleanType) },
     },
 });
+
+UserType.withErrors = withErrors(UserType);
 
 export default UserType;
