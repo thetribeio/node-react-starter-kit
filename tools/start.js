@@ -119,74 +119,32 @@ async function start() {
         apiPromise = new Promise((resolve) => (apiPromiseResolve = resolve));
     });
 
-    function checkForUpdate(fromUpdate) {
-        // hell of a prefix...
-        const hmrPrefix = '[\x1b[35mHMR\x1b[0m] ';
-
-        if (!api.hot) {
-            // Cannot do anything without the HOT module
-            throw new Error(`${hmrPrefix}Hot Module Replacement is disabled.`);
-        }
-
-        if (api.hot.status() !== 'idle') {
-            return Promise.resolve();
-        }
-
-        return api.hot
-            .check(true)
-            .then((updatedModules) => {
-                if (!updatedModules) {
-                    if (fromUpdate) {
-                        console.info(`${hmrPrefix}Update applied.`);
-                    }
-
-                    return;
-                }
-
-                if (0 === updatedModules.length) {
-                    console.info(`${hmrPrefix}Nothing hot updated.`);
-                } else {
-                    console.info(`${hmrPrefix}Updated modules:`);
-                    updatedModules.forEach((moduleId) => console.info(`${hmrPrefix} - ${moduleId}`));
-                    checkForUpdate(true);
-                }
-            })
-            .catch((error) => {
-                if (['abort', 'fail'].includes(api.hot.status())) {
-                    console.warn(`${hmrPrefix}Cannot apply update.`);
-                    // we cannot apply the update so we will reload the whole server
-                    // but first delete the node cache
-                    delete require.cache[require.resolve('../build/server')];
-                    // now we can get the latest version of our server
-                    // eslint-disable-next-line global-require, import/no-unresolved
-                    api = require('../build/server').default;
-                    console.warn(`${hmrPrefix}Server has been reloaded.`);
-                } else {
-                    console.warn(`${hmrPrefix}Update failed: ${error.stack || error.message}`);
-                }
-            });
-    }
-
     // watch the server compiler
     serverCompiler.watch(watchOptions, (error, stats) => {
-        if (api && !error && !stats.hasErrors()) {
-            // first check for updates
-            checkForUpdate().then(() => {
-                apiPromiseIsResolved = true;
-                apiPromiseResolve();
-            });
+        if (!error && !stats.hasErrors()) {
+            try {
+                // we cannot apply the update so we will reload the whole server
+                // but first delete the node cache
+                delete require.cache[require.resolve('../build/server')];
+
+                // now we can get the latest version of our server
+                // eslint-disable-next-line global-require, import/no-unresolved
+                api = require('../build/server').default;
+
+                console.warn('[\x1b[35mHot Reload\x1b[0m]  Server has been reloaded.');
+            } catch (runtimeError) {
+                // print the error
+                console.error(runtimeError);
+            }
+
+            apiPromiseIsResolved = true;
+            apiPromiseResolve();
         }
     });
 
     // Wait until both client and server bundles are ready
     await clientPromise;
     await serverPromise;
-
-    // loader our server for the first time
-    // eslint-disable-next-line global-require, import/no-unresolved
-    api = require('../build/server').default;
-    apiPromiseIsResolved = true;
-    apiPromiseResolve();
 
     // Launch WebpackDevServer.
     devServer.listen(port, host, (err) => {
