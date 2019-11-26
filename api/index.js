@@ -8,7 +8,6 @@ import expressGraphQL from 'express-graphql';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
 import Html from './components/Html';
-import exampleController from './controllers/exampleController';
 import initLoaders from './loaders';
 import schema from './schema';
 
@@ -65,9 +64,6 @@ server.use(
         ...generateApolloSettings(request),
     })),
 );
-
-// controllers
-server.use('/example', exampleController);
 
 // then fallback
 server.use(history());
