@@ -165,6 +165,7 @@ const clientConfig = {
         // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
         alias: {
             '@app': path.resolve('./app'),
+            '@schema': path.resolve('./schema'),
         },
     },
 
@@ -368,6 +369,7 @@ const serverConfig = {
         // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
         alias: {
             '@api': path.resolve('./api'),
+            '@schema': path.resolve('./schema'),
         },
     },
 

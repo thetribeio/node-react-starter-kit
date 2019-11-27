@@ -4,7 +4,7 @@
     },
     "settings": {
         "import/resolver": {
-            "alias": [["@app", "./app"]]
+            "alias": [["@app", "./app"], ["@schema", "./schema"]]
         }
     },
     "globals": {

@@ -1,2 +1,2 @@
-export { default as withMiddlewares } from './withMiddlewares';
+export * from '@schema/utils';
 export * from './errors';

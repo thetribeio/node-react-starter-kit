@@ -4,6 +4,7 @@
             "module-resolver", {
                 "alias": {
                     "@api": "./api",
+                    "@schema": "./schema"
                 }
             }
         ]
