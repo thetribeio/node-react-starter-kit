@@ -1,7 +1,7 @@
 import { BookType } from '@schema/types';
-import { patchFields } from '../utils';
+import { patchTypeFields } from '../utils';
 
-export default patchFields(
+export default patchTypeFields(
     BookType,
     {
         writer: {

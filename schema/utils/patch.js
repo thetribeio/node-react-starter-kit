@@ -3,13 +3,16 @@ export const patchTypeFields = (type, patch) => {
     const getOriginalFieldMap = type._fields;
 
     // eslint-disable-next-line no-param-reassign, no-underscore-dangle
-    type._fields = () => {
-        const originalFieldMap = Object.entries(getOriginalFieldMap());
+    type._fields = (...args) => {
+        const originalFieldMap = Object.entries(getOriginalFieldMap(...args));
 
-        return Object.fromEntries(originalFieldMap.map(([fieldName, field]) => ({
-            ...field,
-            ...patch[fieldName],
-        })));
+        return Object.fromEntries(originalFieldMap.map(([fieldName, field]) => ([
+            fieldName,
+            {
+                ...field,
+                ...patch[fieldName],
+            },
+        ])));
     };
 
     return type;
