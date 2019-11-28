@@ -127,7 +127,10 @@ const styleRules = [
         oneOf: [
             {
                 loader: 'css-loader',
-                options: { localsConvention: 'camelCase', modules: true },
+                options: {
+                    localsConvention: 'camelCase',
+                    modules: true
+                },
                 // only use module style in the directories components & routes
                 include: [
                     path.join(rootDir, 'app/components'),
@@ -137,7 +140,10 @@ const styleRules = [
             { loader: 'css-loader' },
         ],
     },
-    { loader: 'sass-loader', test: /\.scss$/ },
+    {
+        loader: 'sass-loader',
+        test: /\.scss$/
+    },
 ];
 
 const clientConfig = {
@@ -165,6 +171,7 @@ const clientConfig = {
         // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
         alias: {
             '@app': path.resolve('./app'),
+            '@schema': path.resolve('./schema'),
         },
     },
 
@@ -181,6 +188,13 @@ const clientConfig = {
                 // Do not transform modules to CJS
                 modules: false,
             }),
+
+            // required to bring graphql-js on front-end
+            {
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: 'javascript/auto',
+            },
 
             // Shared rules
             ...sharedRules,
@@ -218,7 +232,10 @@ const clientConfig = {
                     const chunkFiles = stats.compilation.chunkGroups.reduce((acc, entry) => {
                         if (!acc[entry.name]) {
                             // initialize the first time an empty map
-                            acc[entry.name] = { js: [], css: [] };
+                            acc[entry.name] = {
+                                js: [],
+                                css: []
+                            };
                         }
 
                         const entryMap = acc[entry.name];
@@ -368,6 +385,7 @@ const serverConfig = {
         // Allow absolute paths in imports through an alias, e.g. import Button from '@app/components/Button'
         alias: {
             '@api': path.resolve('./api'),
+            '@schema': path.resolve('./schema'),
         },
     },
 

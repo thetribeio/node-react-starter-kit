@@ -50,7 +50,7 @@ renderApp();
 
 // Enable Hot Module Replacement (HMR)
 if (module.hot) {
-    module.hot.accept('./App', () => {
+    module.hot.accept(['./App', './apolloClient'], () => {
         if (appInstance && appInstance.updater.isMounted(appInstance)) {
             // Force-update the whole tree, including components that refuse to update
             deepForceUpdate(appInstance);
