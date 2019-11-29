@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import express from 'express';
 import expressGraphQL from 'express-graphql';
+import { formatError } from 'graphql';
 import PrettyError from 'pretty-error';
 import history from 'connect-history-api-fallback';
 import Html from './components/Html';
@@ -61,6 +62,15 @@ server.use(
         graphiql: __DEV__,
         pretty: __DEV__,
         ...generateApolloSettings(request),
+        customFormatErrorFn: (error) => {
+            // first log the error in stderr
+            console.error(error);
+
+            // log the error with sentry
+            Sentry.captureException(error);
+
+            return formatError(error);
+        },
     })),
 );
 
