@@ -12,7 +12,7 @@
   ],
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
-    "@sentry/browser": "^5.9.1",
+    "@sentry/browser": "^5.10.1",
     "@sentry/node": "^5.9.0",
     "connect-history-api-fallback": "^1.6.0",
     "cors": "^2.8.5",
