@@ -120,7 +120,12 @@ const styleRules = [
         oneOf: [
             {
                 loader: 'css-loader',
-                options: { localsConvention: 'camelCase', modules: true },
+                options: {
+                    localsConvention: 'camelCase',
+                    modules: {
+                        mode: 'pure',
+                    },
+                },
                 // only use module style in the directories components & routes
                 include: [
                     path.join(rootDir, 'app/components'),
