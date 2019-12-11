@@ -36,7 +36,7 @@
     "@babel/cli": "^7.7.4",
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
-    "@babel/plugin-transform-runtime": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
     "@thetribe/eslint-config-react": "^0.2.2",
