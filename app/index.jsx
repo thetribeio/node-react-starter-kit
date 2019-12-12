@@ -7,6 +7,8 @@ import deepForceUpdate from 'react-deep-force-update';
 import { render } from 'react-dom';
 import App from './App';
 import ErrorBoundary from './components/ErrorBoundary';
+// Load i18n instance
+import './i18n';
 
 // get the container
 const container = document.getElementById('app');
