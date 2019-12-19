@@ -26,7 +26,7 @@ const Home = () => {
                 {t('buttons:youClicked', { count })}
             </button>
             <button id="translate" type="button" onClick={() => i18n.changeLanguage('en' === i18n.language ? 'fr' : 'en')}>
-                {t('translate')}
+                {t('buttons:translate')}
             </button>
         </div>
     );
