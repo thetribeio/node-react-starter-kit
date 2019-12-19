@@ -6,7 +6,7 @@ import enButtons from '../../public/locales/en/buttons.json';
 import frTranslation from '../../public/locales/fr/translation.json';
 import frButtons from '../../public/locales/fr/buttons.json';
 
-i18n
+const loadI18n = () => i18n
     .use(initReactI18next)
     .init({
         resources: {
@@ -32,4 +32,4 @@ i18n
         },
     });
 
-export default i18n;
+export default loadI18n;
