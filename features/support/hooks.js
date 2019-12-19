@@ -87,7 +87,7 @@ After(async function ({ pickle: { name }, result: { status } }) {
         // eslint-disable-next-line no-underscore-dangle
         const jobId = (await this.driver.getSession()).id_;
         const passed = 'passed' === status;
-        sauceApi.updateJob(SAUCELABS_USER, jobId, {
+        await sauceApi.updateJob(SAUCELABS_USER, jobId, {
             name: `${this.browser} - ${name}`,
             passed,
         });
@@ -95,5 +95,5 @@ After(async function ({ pickle: { name }, result: { status } }) {
             console.info(`Failed test video: https://app.saucelabs.com/tests/${jobId}`);
         }
     }
-    this.driver.quit();
+    await this.driver.quit();
 });
