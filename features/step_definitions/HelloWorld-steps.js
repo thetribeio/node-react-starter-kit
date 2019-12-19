@@ -5,8 +5,8 @@ Given('I am on Home page', async function () {
     await this.page.loadAndWaitUntilVisible();
 });
 
-When(/I press the button/, async function () {
-    await this.page.clickButton();
+When('I press the {string} button', async function (id) {
+    await this.page.clickButtonById(id);
 });
 
 Then(/"(.*)" is displayed in Home page/, async function (text) {

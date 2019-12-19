@@ -16,7 +16,7 @@ const Home = () => {
         }
     }, [count, setCount]);
 
-    const { t } = useTranslation(['translation', 'buttons']);
+    const { t, i18n } = useTranslation(['translation', 'buttons']);
 
     return (
         <div>
@@ -24,6 +24,9 @@ const Home = () => {
             <h1 id="hello-world" className={styles.title}>{t('helloWorld')}</h1>
             <button id="click-me" type="button" onClick={onClick}>
                 {t('buttons:youClicked', { count })}
+            </button>
+            <button id="translate" type="button" onClick={() => i18n.changeLanguage('en' === i18n.language ? 'fr' : 'en')}>
+                {t('translate')}
             </button>
         </div>
     );

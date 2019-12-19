@@ -16,8 +16,8 @@ class Home extends Base {
         expect(btnText).toBe(text);
     }
 
-    clickButton() {
-        return this.driver.findElement(By.tagName('button')).click();
+    clickButtonById(id) {
+        return this.driver.findElement(By.id(id)).click();
     }
 }
 
