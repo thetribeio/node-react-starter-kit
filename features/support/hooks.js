@@ -2,8 +2,8 @@ import { After, Before } from 'cucumber';
 import SauceLabs from 'saucelabs';
 
 import { Builder } from 'selenium-webdriver';
-import firefox from 'selenium-webdriver/firefox';
 import chrome from 'selenium-webdriver/chrome';
+import firefox from 'selenium-webdriver/firefox';
 import safari from 'selenium-webdriver/safari';
 
 const { SAUCELABS_HOST, SAUCELABS_KEY, SAUCELABS_TUNNEL_IDENTIFIER, SAUCELABS_USER } = process.env;

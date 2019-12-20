@@ -1,5 +1,5 @@
-import path from 'path';
 import { builtinModules } from 'module';
+import path from 'path';
 import pkg from '../../package.json';
 
 const pluginName = 'WebpackPackagePlugin';

@@ -1,5 +1,5 @@
-import Router from '@api/utils/Router';
 import { Book } from '@api/models';
+import Router from '@api/utils/Router';
 
 const router = new Router();
 
