@@ -1,13 +1,13 @@
 import path from 'path';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import * as Sentry from '@sentry/node';
+import history from 'connect-history-api-fallback';
 import cors from 'cors';
 import express from 'express';
 import PrettyError from 'pretty-error';
-import history from 'connect-history-api-fallback';
-import Html from './components/Html';
-import exampleController from './controllers/exampleController';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import Html from '@api/components/Html';
+import exampleController from '@api/controllers/exampleController';
 
 const getManifest = () => {
     if (__DEV__) {

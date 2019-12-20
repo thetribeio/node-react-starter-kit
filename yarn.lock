@@ -1080,18 +1080,18 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@thetribe/eslint-config-react@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config-react/-/eslint-config-react-0.2.2.tgz#ade4595401f64fd81d6d4dd851e9faeafce98305"
-  integrity sha512-YSihjwQ5VP0YYVzV7BJS6cNq+08JxCixJ0hZuLLHprtEjeN5t46BiUJmmQG2CvwZWPBZZVtPAQ4NOGjgHCMmAg==
+"@thetribe/eslint-config-react@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config-react/-/eslint-config-react-0.3.1.tgz#fcb6b157884874f5138f9da703f8b9a75f676999"
+  integrity sha512-j6bBJcUIKJ7azikBhhQJQbcxaKzhoWjC3uTND+GCuR3ylvmQ4ls2+cdieDl09GSPsKDQ+X/NpKVp0yPiMt9BxA==
   dependencies:
-    "@thetribe/eslint-config" "^0.2.1"
+    "@thetribe/eslint-config" "^0.3.1"
     eslint-config-airbnb "^18.0.1"
 
-"@thetribe/eslint-config@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config/-/eslint-config-0.2.1.tgz#125cb229663798941fe72ed2565de9b5ec3179be"
-  integrity sha512-OqXtinYBM2MDM1x799S+4VIw1lCecmXwLqsghBxyANbak3l/BOZSb20fOea3PmnGmEQR5/1ONod3FzJhEdcWDQ==
+"@thetribe/eslint-config@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@thetribe/eslint-config/-/eslint-config-0.3.1.tgz#ab53d68ed7c43c6bc6f4759bea5623ad2dab6f6e"
+  integrity sha512-YEojK2xvLULMNQKj4V3KSGE+8tFnF6On4nN9XZXJToNJ6SoGJnd7IakPMOwlVZ+gUNLo8OG1RmHAqbUNB+PpEA==
   dependencies:
     eslint-config-airbnb-base "^14.0.0"
 
@@ -3976,6 +3976,11 @@ eslint-plugin-jsx-a11y@^6.2.3:
     emoji-regex "^7.0.2"
     has "^1.0.3"
     jsx-ast-utils "^2.2.1"
+
+eslint-plugin-react-hooks@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.7.0.tgz#6210b6d5a37205f0b92858f895a4e827020a7d04"
+  integrity sha512-iXTCFcOmlWvw4+TOE8CLWj6yX1GwzT0Y6cUfHHZqWnSk144VmVIRcVGtUAzrLES7C798lmvnt02C7rxaOX1HNA==
 
 eslint-plugin-react@^7.17.0:
   version "7.17.0"

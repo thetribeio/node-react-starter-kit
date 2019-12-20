@@ -3,8 +3,14 @@
         "browser": true
     },
     "settings": {
+        "import/internal-regex": "^@app/",
         "import/resolver": {
-            "alias": [["@app", "./app"]]
+            "alias": {
+                extensions: ['.js', '.jsx'],
+                map: [
+                    ["@app", "./app"]
+                ]
+            }
         }
     },
     "globals": {

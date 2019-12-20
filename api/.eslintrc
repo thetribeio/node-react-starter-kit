@@ -3,8 +3,14 @@
         "node": true
     },
     "settings": {
+        "import/internal-regex": "^@api/",
         "import/resolver": {
-            "alias": [["@api", "./api"]]
+            "alias": {
+                extensions: ['.js', '.jsx'],
+                map: [
+                    ["@api", "./api"]
+                ]
+            }
         }
     },
     "globals": {
