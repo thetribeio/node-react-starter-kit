@@ -15,3 +15,6 @@ yarn-error.log*
 # Docker
 /docker-compose.override.yml
 /watchOptions.config.js
+
+# Env
+/.env

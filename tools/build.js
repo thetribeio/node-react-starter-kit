@@ -1,7 +1,7 @@
-import run from './run';
+import bundle from './bundle';
 import clean from './clean';
 import copy from './copy';
-import bundle from './bundle';
+import run from './run';
 
 /**
  * Compiles the project from source files into a distributable
