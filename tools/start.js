@@ -77,6 +77,7 @@ async function start() {
 
     // webpack dev server (with HMR)
     const devServer = new WebpackDevServer(clientCompiler, {
+        contentBase: false,
         disableHostCheck: true,
         compress: true,
         clientLogLevel: 'none',
