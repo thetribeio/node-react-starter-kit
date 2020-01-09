@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import React, { PureComponent, createContext, useContext } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
 import createStore from '@app/createStore';
 import Routes from '@app/Routes';
-
-import './App.css';
+import i18n from '@app/i18n';
+import '@app/App.css';
 
 export const AppDataContext = createContext({});
 
@@ -25,11 +26,13 @@ class App extends PureComponent {
 
         return (
             <AppDataContext.Provider value={appData}>
-                <Provider store={this.store}>
-                    <Router history={this.history}>
-                        <Routes />
-                    </Router>
-                </Provider>
+                <I18nextProvider i18n={i18n}>
+                    <Provider store={this.store}>
+                        <Router history={this.history}>
+                            <Routes />
+                        </Router>
+                    </Provider>
+                </I18nextProvider>
             </AppDataContext.Provider>
         );
     }

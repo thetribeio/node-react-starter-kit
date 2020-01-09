@@ -1,26 +1,11 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import backend from 'i18next-xhr-backend';
 
-import enTranslation from '../../public/locales/en/translation.json';
-import enButtons from '../../public/locales/en/buttons.json';
-import frTranslation from '../../public/locales/fr/translation.json';
-import frButtons from '../../public/locales/fr/buttons.json';
-
-const loadI18n = () => i18n
-    .use(initReactI18next)
+i18n
+    .use(backend)
     .init({
-        resources: {
-            en: {
-                translation: enTranslation,
-                buttons: enButtons,
-            },
-            fr: {
-                translation: frTranslation,
-                buttons: frButtons,
-            },
-        },
+        loadPath: '/locales/{{lng}}/{{ns}}.json',
         debug: __DEV__,
-        whitelist: ['en', 'fr'],
         lng: 'en',
         fallbackLng: 'en',
         // Differents namespaces may be loaded individually when using `useTranlation` for performance concern
@@ -30,6 +15,9 @@ const loadI18n = () => i18n
         interpolation: {
             escapeValue: false,
         },
+        react: {
+            useSuspense: false,
+        },
     });
 
-export default loadI18n;
+export default i18n;
