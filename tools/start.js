@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
 import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
 import chalk from 'react-dev-utils/chalk';
 import clearConsole from 'react-dev-utils/clearConsole';
@@ -77,6 +76,7 @@ async function start() {
 
     // webpack dev server (with HMR)
     const devServer = new WebpackDevServer(clientCompiler, {
+        contentBase: path.resolve(__dirname, '../public'),
         disableHostCheck: true,
         compress: true,
         clientLogLevel: 'none',
@@ -93,8 +93,6 @@ async function start() {
             app.use(handleByServer);
         },
         before(app, server) {
-            // serve public files
-            app.use(express.static(path.resolve(__dirname, '../public')));
             // apply middlewares for dev purposes
             app.use(evalSourceMapMiddleware(server));
             app.use(errorOverlayMiddleware());
