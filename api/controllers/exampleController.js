@@ -13,4 +13,8 @@ router.get('/books', async (req, res) => {
     return res.json(books.map((book) => book.toJSON()));
 });
 
+router.post('/click', (req, res) => {
+    res.sendStatus(200);
+});
+
 export default router;
