@@ -5,7 +5,8 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import createStore from '@app/createStore';
 import Routes from '@app/Routes';
-import '@app/App.css';
+
+import './App.css';
 
 export const AppDataContext = createContext({});
 
