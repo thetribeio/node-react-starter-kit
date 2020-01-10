@@ -1,13 +1,13 @@
 import fs from 'fs';
 import path from 'path';
-import webpack from 'webpack';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import nodeExternals from 'webpack-node-externals';
-import WebpackAssetsManifest from 'webpack-assets-manifest';
 import TerserPlugin from 'terser-webpack-plugin';
-import PackagePlugin from './lib/WebpackPackagePlugin';
+import webpack from 'webpack';
+import WebpackAssetsManifest from 'webpack-assets-manifest';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import nodeExternals from 'webpack-node-externals';
 import pkg from '../package.json';
+import PackagePlugin from './lib/WebpackPackagePlugin';
 
 const rootDir = path.resolve(__dirname, '..');
 const buildDir = path.join(rootDir, 'build');
@@ -132,7 +132,12 @@ const styleRules = [
         oneOf: [
             {
                 loader: 'css-loader',
-                options: { localsConvention: 'camelCase', modules: true },
+                options: {
+                    localsConvention: 'camelCase',
+                    modules: {
+                        mode: 'pure',
+                    },
+                },
                 // only use module style in the directories components & routes
                 include: [
                     path.join(rootDir, 'app/components'),

@@ -3,9 +3,9 @@ import {
     GraphQLNonNull as NonNull,
     GraphQLString as StringType,
 } from 'graphql';
-import { Book } from '@api/models';
 import { BookType } from '../types';
 import { transformSequelizeErrors, withHandledErrors, withMiddlewares } from '../utils';
+import { Book } from '@api/models';
 
 export default {
     args: {

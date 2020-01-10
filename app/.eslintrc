@@ -3,8 +3,15 @@
         "browser": true
     },
     "settings": {
+        "import/internal-regex": "^@ap[ip]/",
         "import/resolver": {
-            "alias": [["@api", "./api"], ["@app", "./app"]]
+            "alias": {
+                extensions: ['.js', '.jsx'],
+                map: [
+                    ["@api", "./api"],
+                    ["@app", "./app"]
+                ]
+            }
         }
     },
     "globals": {

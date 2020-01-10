@@ -3,17 +3,18 @@ import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { getDataFromTree } from 'react-apollo';
 import * as Sentry from '@sentry/node';
+import history from 'connect-history-api-fallback';
 import cors from 'cors';
 import express from 'express';
 import expressGraphQL from 'express-graphql';
+import { formatError } from 'graphql';
 import PrettyError from 'pretty-error';
-import history from 'connect-history-api-fallback';
 import { StaticRouter } from 'react-router-dom';
+import Html from '@api/components/Html';
+import initLoaders from '@api/loaders';
+import schema from '@api/schema';
+import createApolloClient from '@api/utils/createApolloClient';
 import App from '@app/App';
-import Html from './components/Html';
-import createApolloClient from './utils/createApolloClient';
-import initLoaders from './loaders';
-import schema from './schema';
 
 const getManifest = () => {
     if (__DEV__) {
@@ -65,6 +66,15 @@ server.use(
         graphiql: __DEV__,
         pretty: __DEV__,
         ...generateApolloSettings(request),
+        customFormatErrorFn: (error) => {
+            // first log the error in stderr
+            console.error(error);
+
+            // log the error with sentry
+            Sentry.captureException(error);
+
+            return formatError(error);
+        },
     })),
 );
 

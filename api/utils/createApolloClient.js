@@ -1,8 +1,8 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client';
 import { from } from 'apollo-link';
-import { SchemaLink } from 'apollo-link-schema';
 import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { SchemaLink } from 'apollo-link-schema';
 
 export default function createApolloClient(schema) {
     const link = from([

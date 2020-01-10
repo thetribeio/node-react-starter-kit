@@ -1,8 +1,8 @@
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { from } from 'apollo-link';
-import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
 import apolloLogger from 'apollo-link-logger';
 
 const cache = new InMemoryCache({ addTypename: false });
