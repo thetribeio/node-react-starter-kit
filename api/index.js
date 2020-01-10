@@ -1,16 +1,16 @@
 import path from 'path';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
 import * as Sentry from '@sentry/node';
+import history from 'connect-history-api-fallback';
 import cors from 'cors';
 import express from 'express';
 import expressGraphQL from 'express-graphql';
 import { formatError } from 'graphql';
 import PrettyError from 'pretty-error';
-import history from 'connect-history-api-fallback';
-import Html from './components/Html';
-import initLoaders from './loaders';
-import schema from './schema';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import Html from '@api/components/Html';
+import initLoaders from '@api/loaders';
+import schema from '@api/schema';
 
 const getManifest = () => {
     if (__DEV__) {
