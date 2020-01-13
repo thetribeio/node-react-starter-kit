@@ -127,13 +127,14 @@ const config = {
     devtool: isDebug ? 'cheap-module-inline-source-map' : 'source-map',
 };
 
-const styleRules = [
+const getStyleRules = ({ onlyLocals = false } = {}) => [
     {
         oneOf: [
             {
                 loader: 'css-loader',
                 options: {
                     localsConvention: 'camelCase',
+                    onlyLocals,
                     modules: {
                         mode: 'pure',
                     },
@@ -196,7 +197,7 @@ const clientConfig = {
                 test: /\.s?css$/,
                 rules: [
                     { loader: isDebug ? 'style-loader' : MiniCssExtractPlugin.loader },
-                    ...styleRules,
+                    ...getStyleRules(),
                 ],
             },
 
@@ -393,8 +394,7 @@ const serverConfig = {
             {
                 test: /\.s?css$/,
                 rules: [
-                    { loader: 'null-loader' },
-                    ...styleRules,
+                    ...getStyleRules({ onlyLocals: true }),
                 ],
             },
 
