@@ -1,11 +1,11 @@
+import bcrypt from 'bcrypt';
 import {
     GraphQLNonNull as NonNull,
     GraphQLString as StringType,
 } from 'graphql';
-import bcrypt from 'bcrypt';
-import { User } from '@api/models';
 import { UserType } from '../types';
 import { withMiddlewares, withHandledErrors, transformSequelizeErrors } from '../utils';
+import { User } from '@api/models';
 
 export default {
     args: {

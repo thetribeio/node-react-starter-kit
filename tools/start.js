@@ -1,17 +1,16 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
 import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
-import clearConsole from 'react-dev-utils/clearConsole';
-import openBrowser from 'react-dev-utils/openBrowser';
 import chalk from 'react-dev-utils/chalk';
+import clearConsole from 'react-dev-utils/clearConsole';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import evalSourceMapMiddleware from 'react-dev-utils/evalSourceMapMiddleware';
-import webpackConfig from './webpack.config';
-import run from './run';
+import openBrowser from 'react-dev-utils/openBrowser';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import clean from './clean';
+import run from './run';
+import webpackConfig from './webpack.config';
 
 const isInteractive = process.stdout.isTTY;
 const host = process.env.HOST || '0.0.0.0';
@@ -77,6 +76,7 @@ async function start() {
 
     // webpack dev server (with HMR)
     const devServer = new WebpackDevServer(clientCompiler, {
+        contentBase: path.resolve(__dirname, '../public'),
         disableHostCheck: true,
         compress: true,
         clientLogLevel: 'none',
@@ -93,8 +93,6 @@ async function start() {
             app.use(handleByServer);
         },
         before(app, server) {
-            // serve public files
-            app.use(express.static(path.resolve(__dirname, '../public')));
             // apply middlewares for dev purposes
             app.use(evalSourceMapMiddleware(server));
             app.use(errorOverlayMiddleware());

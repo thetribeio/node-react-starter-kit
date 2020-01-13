@@ -3,8 +3,8 @@ import {
     GraphQLList as ListType,
     GraphQLBoolean as BooleanType,
 } from 'graphql';
-import { User } from '@api/models';
 import { UserType } from '../types';
+import { User } from '@api/models';
 
 export default {
     type: new NonNull(new ListType(new NonNull(UserType))),

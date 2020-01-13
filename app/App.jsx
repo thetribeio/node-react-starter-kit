@@ -3,8 +3,9 @@ import React, { PureComponent, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
-import createStore from './createStore';
-import Routes from './Routes';
+import createStore from '@app/createStore';
+import Routes from '@app/Routes';
+
 import './App.css';
 
 export const AppDataContext = createContext({});

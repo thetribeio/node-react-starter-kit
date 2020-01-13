@@ -1,7 +1,7 @@
-import User from './User';
 import Book from './Book';
+import User from './User';
 
-const models = { User, Book };
+const models = { Book, User };
 
 Object.values(models).forEach((model) => {
     if (model.associate) {
@@ -12,4 +12,4 @@ Object.values(models).forEach((model) => {
     }
 });
 
-export { User, Book };
+export { Book, User };
