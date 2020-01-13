@@ -82,9 +82,9 @@
   },
   "scripts": {
     "lint:js": "eslint --ext js,jsx --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
-    "lint:js:fix": "yarn run lint --fix",
+    "lint:js:fix": "yarn run lint:js --fix",
     "lint:css": "stylelint \"app/**/*.{css,scss}\"",
-    "lint:css:fix": "yarn run lint-css --fix",
+    "lint:css:fix": "yarn run lint:css --fix",
     "lint": "yarn run lint:js && yarn run lint:css",
     "test": "jest",
     "test:watch": "yarn run test --watch --notify",
