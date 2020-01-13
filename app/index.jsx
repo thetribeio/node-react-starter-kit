@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate, render } from 'react-dom';
 import * as Sentry from '@sentry/browser';
 // we can safely allow the dev dependency for deepForceUpdate
 // on production, webpack will nullify it
@@ -43,7 +43,7 @@ const renderApp = () => {
         }
 
         // render it
-        appInstance = render(appElement, container);
+        appInstance = (appInstance ? render : hydrate)(appElement, container);
     } catch (error) {
         if (__DEV__) {
             throw error;
