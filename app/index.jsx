@@ -1,12 +1,12 @@
-import React from 'react';
-import { render } from 'react-dom';
 import * as Sentry from '@sentry/browser';
+import React from 'react';
 // we can safely allow the dev dependency for deepForceUpdate
 // on production, webpack will nullify it
 // eslint-disable-next-line import/no-extraneous-dependencies
 import deepForceUpdate from 'react-deep-force-update';
-import ErrorBoundary from './components/ErrorBoundary';
+import { render } from 'react-dom';
 import App from './App';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // get the container
 const container = document.getElementById('app');

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ReactReduxContext } from 'react-redux';
-import TestRenderer from 'react-test-renderer';
 import { withRouter } from 'react-router-dom';
+import TestRenderer from 'react-test-renderer';
 import App from '../App';
 
 // mock the Routes component's module
