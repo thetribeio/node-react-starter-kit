@@ -81,7 +81,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
-    "lint:js": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
+    "lint:js": "eslint --ext js,jsx --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
     "lint:js:fix": "yarn run lint --fix",
     "lint:css": "stylelint \"app/**/*.{css,scss}\"",
     "lint:css:fix": "yarn run lint-css --fix",

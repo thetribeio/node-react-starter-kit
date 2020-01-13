@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import styles from './Home.scss';
+
 import banner from '../images/StarterKitTheTribe.png';
+import styles from './Home.scss';
 
 const Home = () => {
     const [count, setCount] = useState(0);
@@ -16,9 +17,9 @@ const Home = () => {
 
     return (
         <div>
-            <img src={banner} alt="Starter kit theTribe" />
-            <h1 id="hello-world" className={styles.title}>hello world</h1>
-            <button id="click-me" type="button" onClick={onClick}>
+            <img alt="Starter kit theTribe" src={banner} />
+            <h1 className={styles.title} id="hello-world">hello world</h1>
+            <button id="click-me" onClick={onClick} type="button">
                 {`You clicked ${count} times`}
             </button>
         </div>

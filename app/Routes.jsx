@@ -4,7 +4,7 @@ import Home from './routes/Home';
 
 const Routes = () => (
     <Switch>
-        <Route exact path="/" component={Home} />
+        <Route component={Home} path="/" exact />
     </Switch>
 );
 
