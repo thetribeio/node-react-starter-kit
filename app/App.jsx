@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { PureComponent, createContext, useContext } from 'react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import Routes from '@app/Routes';
 import createStore from '@app/createStore';
+import Routes from '@app/Routes';
 
 import './App.css';
 
