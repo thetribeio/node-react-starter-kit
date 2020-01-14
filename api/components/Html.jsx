@@ -6,13 +6,13 @@ const Html = ({ appData, manifest: { js: scripts, css: styles } }) => (
         <head>
             <meta charSet="utf-8" />
             <title>theTribe</title>
-            <link rel="icon" type="image/png" href="favicon.png" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            {styles.map((style) => <link rel="stylesheet" type="text/css" href={style} key={style} />)}
+            <link href="favicon.png" rel="icon" type="image/png" />
+            <meta content="width=device-width, initial-scale=1" name="viewport" />
+            {styles.map((style) => <link key={style} href={style} rel="stylesheet" type="text/css" />)}
         </head>
         <body>
-            <div id="app" data-app={JSON.stringify(appData)} />
-            {scripts.map((script) => <script src={script} key={script} />)}
+            <div data-app={JSON.stringify(appData)} id="app" />
+            {scripts.map((script) => <script key={script} src={script} />)}
         </body>
     </html>
 );
@@ -20,8 +20,8 @@ const Html = ({ appData, manifest: { js: scripts, css: styles } }) => (
 Html.propTypes = {
     appData: PropTypes.shape({}).isRequired,
     manifest: PropTypes.shape({
-        js: PropTypes.arrayOf(PropTypes.string).isRequired,
         css: PropTypes.arrayOf(PropTypes.string).isRequired,
+        js: PropTypes.arrayOf(PropTypes.string).isRequired,
     }).isRequired,
 };
 

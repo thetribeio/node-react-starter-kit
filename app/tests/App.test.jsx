@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { ReactReduxContext } from 'react-redux';
-import TestRenderer from 'react-test-renderer';
 import { withRouter } from 'react-router-dom';
+import TestRenderer from 'react-test-renderer';
 import App from '../App';
 
 // mock the Routes component's module
@@ -30,7 +30,7 @@ test('App provide a redux context', () => {
     });
 
     // render the app
-    TestRenderer.create(<App appData={{}} apolloClient={{}} />);
+    TestRenderer.create(<App apolloClient={{}} appData={{}} />);
 
     // ensure the Routes component has been rendered at least once
     expect(Routes.mock.calls.length).toBeGreaterThan(0);
@@ -48,7 +48,7 @@ test('App provide a router context', () => {
     Routes.mockImplementation(withRouter(FakeComponent));
 
     // render the app
-    TestRenderer.create(<App appData={{}} apolloClient={{}} />);
+    TestRenderer.create(<App apolloClient={{}} appData={{}} />);
 
     // ensure the Routes component has been rendered at least once
     expect(Routes.mock.calls.length).toBeGreaterThan(0);

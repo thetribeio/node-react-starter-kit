@@ -1,12 +1,13 @@
 import { createBrowserHistory } from 'history';
-import React, { PureComponent, createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
+import React, { PureComponent, createContext, useContext } from 'react';
+import { ApolloProvider } from 'react-apollo';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import createStore from '@app/createStore';
 import Routes from '@app/Routes';
-import '@app/App.css';
+
+import './App.css';
 
 export const AppDataContext = createContext({});
 
@@ -43,8 +44,8 @@ class App extends PureComponent {
 }
 
 App.propTypes = {
-    appData: PropTypes.shape({}).isRequired,
     apolloClient: PropTypes.shape({}).isRequired,
+    appData: PropTypes.shape({}).isRequired,
 };
 
 export default App;
