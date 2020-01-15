@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
 import chalk from 'react-dev-utils/chalk';
 import clearConsole from 'react-dev-utils/clearConsole';
 import errorOverlayMiddleware from 'react-dev-utils/errorOverlayMiddleware';
 import evalSourceMapMiddleware from 'react-dev-utils/evalSourceMapMiddleware';
 import openBrowser from 'react-dev-utils/openBrowser';
+import { prepareUrls } from 'react-dev-utils/WebpackDevServerUtils';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import clean from './clean';

@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class ErrorBoundary extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class ErrorBoundary extends Component {
         if (error) {
             // render fallback UI
             return (
-                <button type="button" onClick={this.showReportDialog}>Report feedback</button>
+                <button onClick={this.showReportDialog} type="button">Report feedback</button>
             );
         }
 
