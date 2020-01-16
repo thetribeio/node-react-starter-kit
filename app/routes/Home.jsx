@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import styles from './Home.scss';
 import banner from '../images/StarterKitTheTribe.png';
+import styles from './Home.scss';
 
 const Home = () => {
     const [count, setCount] = useState(0);
@@ -25,12 +25,12 @@ const Home = () => {
 
     return (
         <div>
-            <img src={banner} alt="Starter kit theTribe" />
-            <h1 id="hello-world" className={styles.title}>{t('helloWorld')}</h1>
-            <button id="click-me" type="button" onClick={onClick}>
+            <img alt="Starter kit theTribe" src={banner} />
+            <h1 className={styles.title} id="hello-world">{t('helloWorld')}</h1>
+            <button id="click-me" onClick={onClick} type="button">
                 {t('buttons:youClicked', { count })}
             </button>
-            <button id="translate" type="button" onClick={changeLanguage}>
+            <button id="translate" onClick={changeLanguage} type="button">
                 {t('buttons:translate')}
             </button>
         </div>

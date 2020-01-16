@@ -1,12 +1,12 @@
 import { createBrowserHistory } from 'history';
-import React, { PureComponent, createContext, useContext, Suspense } from 'react';
 import PropTypes from 'prop-types';
+import React, { PureComponent, createContext, useContext, Suspense } from 'react';
+import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { I18nextProvider } from 'react-i18next';
 import createStore from '@app/createStore';
-import Routes from '@app/Routes';
 import i18n from '@app/i18n';
+import Routes from '@app/Routes';
 import '@app/App.css';
 
 export const AppDataContext = createContext({});
