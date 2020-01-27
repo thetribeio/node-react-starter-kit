@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
-import mkdirp from 'mkdirp';
 import rimraf from 'rimraf';
 
 export const copyFile = (source, target) => new Promise((resolve, reject) => {
@@ -34,9 +33,7 @@ export const readDir = (pattern, options) => new Promise((resolve, reject) => gl
     (err, result) => (err ? reject(err) : resolve(result)),
 ));
 
-export const makeDir = (name) => new Promise((resolve, reject) => {
-    mkdirp(name, (err) => (err ? reject(err) : resolve()));
-});
+export const makeDir = (name) => fs.promises.mkdir(name, { recursive: true });
 
 export const copyDir = async (source, target) => {
     const dirs = await readDir('**/*.*', {
