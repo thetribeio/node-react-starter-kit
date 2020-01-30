@@ -7,7 +7,7 @@ import { Router } from 'react-router-dom';
 import createStore from '@app/createStore';
 import i18n from '@app/i18n';
 import Routes from '@app/Routes';
-import '@app/App.css';
+import './App.css';
 
 export const AppDataContext = createContext({});
 
