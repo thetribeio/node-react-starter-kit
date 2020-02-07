@@ -3,10 +3,13 @@ version: 2.1
 orbs:
   saucelabs: saucelabs/sauce-connect@1.0.1
 
+partials:
+    node-image: &node-image circleci/node:12.14.1
+
 jobs:
   yarn-install:
     docker:
-      - image:  circleci/node:12.14.1
+      - image: *node-image
     steps:
       - checkout
       - restore_cache:
@@ -29,7 +32,7 @@ jobs:
 
   lint:
     docker:
-      - image: circleci/node:12.14.1
+      - image: *node-image
     steps:
       - checkout
       - attach_workspace:
@@ -54,7 +57,7 @@ jobs:
 
   build:
     docker:
-      - image:  circleci/node:12.14.1
+      - image: *node-image
     steps:
       - checkout
       - attach_workspace:
@@ -69,7 +72,7 @@ jobs:
 
   unit-tests:
     docker:
-      - image:  circleci/node:12.14.1
+      - image: *node-image
     steps:
       - checkout
       - attach_workspace:
@@ -80,7 +83,7 @@ jobs:
 
   functional-tests:
     docker:
-      - image:  circleci/node:12.14.1
+      - image: *node-image
         environment:
           DATABASE_HOST: localhost
           DATABASE_USER: thetribe
