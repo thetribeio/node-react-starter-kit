@@ -1,4 +1,4 @@
-FROM node:12.15.0-slim
+FROM node:12.16.0-slim
 
 COPY docker/docker-entrypoint.sh docker/docker-is-script.js /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
