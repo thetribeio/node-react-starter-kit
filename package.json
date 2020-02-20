@@ -56,7 +56,7 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^1.7.0",
     "expect": "^25.1.0",
-    "file-loader": "^5.0.2",
+    "file-loader": "^5.1.0",
     "glob": "^7.1.6",
     "identity-obj-proxy": "^3.0.0",
     "image-webpack-loader": "^6.0.0",
