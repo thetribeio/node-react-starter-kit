@@ -51,7 +51,7 @@ You may create a file `docker-compose.override.yml` at the root to override your
 Most likely you might be interested in opening a port on the host, or use your yarn cache in docker containers.
 
 ```yaml
-version: '2.0'
+version: '2.4'
 services:
   app:
     volumes:
