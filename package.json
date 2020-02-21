@@ -21,7 +21,7 @@
     "i18next": "^19.0.2",
     "i18next-xhr-backend": "^3.2.2",
     "node-sass": "^4.13.1",
-    "pg": "^7.18.1",
+    "pg": "^7.18.2",
     "pretty-error": "^2.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
