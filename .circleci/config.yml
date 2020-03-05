@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  docker: circleci/docker@1.0.0
   saucelabs: saucelabs/sauce-connect@1.0.1
 
 jobs:
@@ -36,21 +37,6 @@ jobs:
           at: ~/project
       - run: yarn lint:js
       - run: yarn lint:css
-
-  lint-docker:
-    docker:
-      - image: hadolint/hadolint:latest-debian
-    steps:
-      - checkout
-      - run:
-          name: Lint .production/Dockerfile
-          command: hadolint .production/Dockerfile
-      - run:
-          name: Lint docker/selenium/Dockerfile
-          command: hadolint docker/selenium/Dockerfile
-      - run:
-          name: Lint Dockerfile
-          command: hadolint Dockerfile
 
   build:
     docker:
@@ -149,11 +135,12 @@ workflows:
 
   build:
     jobs:
+      - docker/hadolint:
+          dockerfiles: .production/Dockerfile,docker/selenium/Dockerfile,Dockerfile
       - yarn-install
       - lint:
           requires:
             - yarn-install
-      - lint-docker
       - build:
           requires:
             - yarn-install
