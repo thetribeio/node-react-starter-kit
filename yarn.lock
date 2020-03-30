@@ -10023,14 +10023,15 @@ sass-loader@^8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
-saucelabs@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-4.0.1.tgz#56e2ef9f7dc9aa4ef6132c3d7aad237ce0cf26fb"
-  integrity sha512-sLCpjuXZaB4EV1VA6Q+6/i5JZxNUIVXqvBSnw0iHfvDfLtsevfPHIMSZ0tjZxqNaxl7Q9D5vxB9kZd+16511eA==
+saucelabs@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-4.0.2.tgz#2eb4988b1c144fa703f7ed3019cd7bd5fe5df3bd"
+  integrity sha512-kdU7vAFIlGp/22lIgWrdE+9ySJzdbeWE7qb2V2/w0zB/Edz/vEkYYFMWkGobVJr+mmQhex58zuvCXRcjxTlFcA==
   dependencies:
     change-case "^4.1.1"
     got "^10.6.0"
     hash.js "^1.1.7"
+    tunnel "0.0.6"
     yargs "^15.3.1"
 
 sax@~1.2.4:
@@ -11453,6 +11454,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tunnel@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/tunnel/-/tunnel-0.0.6.tgz#72f1314b34a5b192db012324df2cc587ca47f92c"
+  integrity sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
