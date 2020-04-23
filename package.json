@@ -33,7 +33,7 @@
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.21.7",
     "sequelize-cli": "^5.5.1",
-    "source-map-support": "^0.5.17"
+    "source-map-support": "^0.5.18"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
