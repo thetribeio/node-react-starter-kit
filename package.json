@@ -78,7 +78,7 @@
     "terser-webpack-plugin": "^3.0.1",
     "webpack": "^4.43.0",
     "webpack-assets-manifest": "^3.1.1",
-    "webpack-bundle-analyzer": "^3.7.0",
+    "webpack-bundle-analyzer": "^3.8.0",
     "webpack-dev-server": "^3.11.0",
     "webpack-node-externals": "^1.7.2"
   },
