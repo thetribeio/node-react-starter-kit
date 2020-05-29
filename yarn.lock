@@ -3139,7 +3139,7 @@ colors@^1.1.2:
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
 
-combined-stream@^1.0.6, combined-stream@~1.0.6:
+combined-stream@^1.0.6, combined-stream@^1.0.8, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
@@ -5083,6 +5083,15 @@ fork-ts-checker-webpack-plugin@3.1.1:
     semver "^5.6.0"
     tapable "^1.0.0"
     worker-rpc "^0.1.0"
+
+form-data@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/form-data/-/form-data-3.0.0.tgz#31b7e39c85f1355b7139ee0c647cf0de7f83c682"
+  integrity sha512-CKMFDglpbMi6PyN+brwB9Q/GOw0eAnsrEZDgcsH5Krhz5Od/haKHAX0NmQfha2zPPz0JpWzA7GJHGSnvCRLWsg==
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.8"
+    mime-types "^2.1.12"
 
 form-data@~2.3.2:
   version "2.3.3"
@@ -10119,13 +10128,14 @@ sass-loader@^8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
-saucelabs@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-4.3.0.tgz#0758f04965717a0476133bbd767d28fd46cceec3"
-  integrity sha512-+F1g4i5bxttmtA3tAWzt6O1NScI6am13wglcz2Kbz50BWG0ZpIOThm9Afu/xYn6adLVW4aUF5wX2YEyHH/cCWA==
+saucelabs@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/saucelabs/-/saucelabs-4.4.0.tgz#364237bf194a2416efc182ee55334f4600ce7f9f"
+  integrity sha512-qSIIi1uSt++aaqhehLNmVbmSzjEsZj+pNlua6YpK0UChKLlyXSXNCMsmSSA9hfzD+PrAWQMNYGrikOQvGUrtrw==
   dependencies:
     bin-wrapper "^4.1.0"
     change-case "^4.1.1"
+    form-data "^3.0.0"
     got "^11.1.4"
     hash.js "^1.1.7"
     tunnel "0.0.6"
